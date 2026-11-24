@@ -1,6 +1,11 @@
 export type ProjectCategory = 'Professional' | 'Personal' | 'Learning'
 
-export type ProjectSlug = 'okurmen-testing-platform' | 'access-control-system' | 'jobpulse' | 'cover-studio'
+export type ProjectSlug =
+  | 'okurmenkids'
+  | 'okurmen-testing-platform'
+  | 'access-control-system'
+  | 'jobpulse'
+  | 'cover-studio'
 
 export type MetricSource = 'CV' | 'Repository'
 
@@ -21,11 +26,27 @@ export interface ProjectMetric {
   source: MetricSource
 }
 
+/** A live production address, with its reader-facing label and description per language. */
+export interface ProductionLink {
+  url: string
+  label: string
+  description: string
+}
+
+/** Optional architecture diagrams rendered by dedicated components. */
+export type ProjectDiagram = 'okurmenkids'
+
 /** Language-neutral project facts: identifiers, links, technologies, file paths. */
 export interface ProjectBase {
   slug: ProjectSlug
   category: ProjectCategory
   featured: boolean
+  /** Running in production, with live URLs listed in productionUrls. */
+  production?: boolean
+  productionUrls?: string[]
+  /** YouTube video id. */
+  youtubeId?: string
+  diagram?: ProjectDiagram
   stack: string[]
   endpoints: Omit<Endpoint, 'note'>[]
   github: string
@@ -56,6 +77,13 @@ export interface ProjectText {
   unavailable: string[]
   /** One alt text per entry of ProjectBase.images, in the same order. */
   imageAlts: string[]
+  /** One label + description per entry of ProjectBase.productionUrls, in the same order. */
+  productionLinks?: { label: string; description: string }[]
+  /** Implemented functionality grouped by area. */
+  capabilities?: { title: string; body: string }[]
+  /** Deployment, domains and production maintenance. */
+  operations?: string[]
+  videoTitle?: string
 }
 
 /** A project as rendered: base facts merged with the texts of the active language. */
@@ -82,6 +110,12 @@ export interface Project {
   github: string
   live: string | null
   images: ProjectImage[]
+  production: boolean
+  productionLinks: ProductionLink[]
+  capabilities: { title: string; body: string }[]
+  operations: string[]
+  video: { youtubeId: string; title: string } | null
+  diagram: ProjectDiagram | null
 }
 
 export interface ExperienceEntry {
