@@ -36,7 +36,7 @@ npm run preview     # serve dist/ locally on :4173
 Copy `.env.example` to `.env` (or set environment variables in your host) and set:
 
 - `VITE_SITE_URL` — the production origin, for example `https://your-domain.example`. When set, the build adds canonical URLs, absolute Open Graph URLs and `dist/sitemap.xml`, and appends a `Sitemap:` line to `robots.txt`. Without it these are skipped, because the production domain is not configured yet.
-- `VITE_COVER_STUDIO_VIDEO_ID` — the YouTube video id of the Cover Studio presentation (the 11 characters after `watch?v=`, format like `aBcD3fGh1Jk`). When set, `/projects/cover-studio` embeds the video with a click-to-load `youtube-nocookie.com` player; while it is empty (or not a valid id) a “Demo video coming soon” placeholder is shown instead. It is read at build time, so redeploy after changing it (on Vercel/Netlify: add it under the project’s environment variables).
+- `VITE_COVER_STUDIO_VIDEO_ID` — optional. Overrides the YouTube id of the Cover Studio presentation embedded on `/projects/cover-studio` (default: the published video, `4GcK-EKd5XA`). It must be an 11-character YouTube id; anything else is ignored. It is read at build time, so redeploy after changing it.
 
 ## Deployment
 
