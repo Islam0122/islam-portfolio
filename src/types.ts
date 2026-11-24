@@ -44,8 +44,9 @@ export interface ProjectBase {
   /** Running in production, with live URLs listed in productionUrls. */
   production?: boolean
   productionUrls?: string[]
-  /** YouTube video id. */
+  /** YouTube video id and a local poster image shown before the player loads. */
   youtubeId?: string
+  videoPoster?: string
   diagram?: ProjectDiagram
   stack: string[]
   endpoints: Omit<Endpoint, 'note'>[]
@@ -114,7 +115,7 @@ export interface Project {
   productionLinks: ProductionLink[]
   capabilities: { title: string; body: string }[]
   operations: string[]
-  video: { youtubeId: string; title: string } | null
+  video: { youtubeId: string; title: string; poster: string | null } | null
   diagram: ProjectDiagram | null
 }
 

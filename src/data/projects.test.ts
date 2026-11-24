@@ -75,7 +75,7 @@ describe.each(LOCALES)('project content (%s)', (locale) => {
     const p = getProject(locale, 'okurmenkids')
     expect(p?.production).toBe(true)
     expect(p?.diagram).toBe('okurmenkids')
-    expect(p?.video?.youtubeId).toBe('abJjnBRLFW8')
+    expect(p?.video?.youtubeId).toBe('dAkMQGZ9_4o')
     expect(p?.productionLinks.map((l) => l.url)).toEqual([
       'https://okurmenkids.com',
       'https://lms.okurmenkids.com',

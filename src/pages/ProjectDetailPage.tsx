@@ -163,7 +163,7 @@ export default function ProjectDetailPage() {
         <section aria-labelledby="video-h" className="mt-12">
           <h2 id="video-h" className="text-2xl font-semibold tracking-tight text-ink">{s.video}</h2>
           <div className="mt-4">
-            <YouTubeVideo id={project.video.youtubeId} title={project.video.title} />
+            <YouTubeVideo id={project.video.youtubeId} title={project.video.title} poster={project.video.poster} />
           </div>
           <p className="mt-2 text-xs text-muted">{s.videoNote}</p>
         </section>

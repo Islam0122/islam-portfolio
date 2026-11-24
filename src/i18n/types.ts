@@ -83,6 +83,7 @@ export interface UiStrings {
     technologies: string
     readCaseStudy: string
     inProduction: string
+    videoBadge: string
   }
   projects: {
     meta: PageMeta
