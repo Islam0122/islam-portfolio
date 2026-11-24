@@ -173,9 +173,14 @@ export default function ProjectDetailPage() {
           <h2 id="video-h" className="text-2xl font-semibold tracking-tight text-ink">{s.video}</h2>
           <div className="mt-4">
             {project.video ? (
-              <YouTubeVideo id={project.video.youtubeId} title={project.video.title} />
+              <YouTubeVideo id={project.video.youtubeId} title={project.video.title} poster={project.video.poster} />
             ) : (
-              project.videoPending && <VideoPlaceholder envVar={project.videoPending.envVar} poster={project.images[0]?.src} />
+              project.videoPending && (
+                <VideoPlaceholder
+                  envVar={project.videoPending.envVar}
+                  poster={project.videoPending.poster ?? project.images[0]?.src}
+                />
+              )
             )}
           </div>
           {project.video && <p className="mt-2 text-xs text-muted">{s.videoNote}</p>}

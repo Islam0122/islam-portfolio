@@ -71,6 +71,7 @@ const ui: UiStrings = {
     githubLabel: (projectTitle) => `${projectTitle}: source code on GitHub`,
     watchDemo: 'Watch demo',
     watchDemoLabel: (projectTitle) => `Watch the demo video of ${projectTitle}`,
+    videoBadge: 'Video',
   },
   projects: {
     meta: {
@@ -152,14 +153,27 @@ const ui: UiStrings = {
   },
   experience: {
     meta: {
-      title: 'Experience — Islam Duishobaev',
+      title: 'Professional Experience — Islam Duishobaev, Full Stack & Python Backend Developer',
       description:
-        'Work history: Full Stack developer at OKURMEN IT (2024–present) and Python Backend developer at GEEKSPRO (2023). Responsibilities and outcomes as stated on the CV.',
+        'Professional experience of Islam Duishobaev: Full Stack Developer at OKURMEN IT (2024–present) building the OkurmenKIDS platform, and Python Backend Developer at GEEKSPRO (2023). Django, DRF, React, PostgreSQL, Celery.',
     },
     eyebrow: 'Experience',
-    title: 'Where I have worked',
-    intro: 'Outcomes marked “(CV)” are the candidate’s own figures and have not been independently checked.',
-    relatedCaseStudies: 'Related case studies:',
+    title: 'Professional Experience',
+    intro:
+      'My professional journey in software development — from backend engineering to building full-stack web products.',
+    overview: [
+      { label: 'Experience', value: 'About 3 years (CV)' },
+      { label: 'Current role', value: 'Full Stack Developer, OKURMEN IT' },
+      { label: 'Focus', value: 'Python backend · React' },
+    ],
+    timelineLabel: 'Work history',
+    current: 'Current',
+    responsibilities: 'What I built',
+    results: 'Key results',
+    resultsNote: 'CV figures are self-reported and not independently verified. Repository figures can be checked in the source code.',
+    stack: 'Tech stack',
+    relatedProjects: 'Related projects',
+    openCaseStudy: (projectTitle) => `Open the case study: ${projectTitle}`,
     educationTitle: 'Education & courses',
     cvTitle: 'Full CV',
     cvBody: 'The full CV (Russian, PDF) has the complete work history, skills and contact details.',

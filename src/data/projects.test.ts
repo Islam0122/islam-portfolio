@@ -75,7 +75,7 @@ describe.each(LOCALES)('project content (%s)', (locale) => {
     const p = getProject(locale, 'okurmenkids')
     expect(p?.production).toBe(true)
     expect(p?.diagram).toBe('okurmenkids')
-    expect(p?.video?.youtubeId).toBe('abJjnBRLFW8')
+    expect(p?.video?.youtubeId).toBe('dAkMQGZ9_4o')
     expect(p?.productionLinks.map((l) => l.url)).toEqual([
       'https://okurmenkids.com',
       'https://lms.okurmenkids.com',
@@ -141,7 +141,11 @@ describe('demo videos', () => {
       expect(p.video.youtubeId).toMatch(/^[A-Za-z0-9_-]{11}$/)
       expect(p.videoPending).toBeNull()
     } else {
-      expect(p?.videoPending).toEqual({ envVar: 'VITE_COVER_STUDIO_VIDEO_ID', title: p?.video?.title ?? DICTIONARIES[locale].projects['cover-studio'].videoTitle })
+      expect(p?.videoPending).toEqual({
+        envVar: 'VITE_COVER_STUDIO_VIDEO_ID',
+        title: DICTIONARIES[locale].projects['cover-studio'].videoTitle,
+        poster: '/img/cover-studio-youtube-thumbnail.jpg',
+      })
     }
   })
 

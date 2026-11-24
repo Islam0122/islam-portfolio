@@ -26,7 +26,8 @@ export const PROJECT_BASES: ProjectBase[] = [
       'https://api.okurmenkids.com',
       'https://api.okurmenkids.com/admin/',
     ],
-    youtubeId: 'abJjnBRLFW8',
+    youtubeId: 'dAkMQGZ9_4o',
+    videoPoster: '/img/okurmenkids-youtube-thumbnail.jpg',
     diagram: 'okurmenkids',
     stack: [
       'Python',
@@ -64,7 +65,13 @@ export const PROJECT_BASES: ProjectBase[] = [
     ],
     github: 'https://github.com/Islam0122/OkurmenKIDS',
     live: 'https://okurmenkids.com',
-    images: [{ src: '/img/okurmenkids-lms-lesson.png' }],
+    images: [
+      { src: '/img/okurmenkids-website.jpg' },
+      { src: '/img/okurmenkids-lms-schedule.jpg' },
+      { src: '/img/okurmenkids-training-portal.jpg' },
+      { src: '/img/okurmenkids-lms-lesson.png' },
+      { src: '/img/okurmenkids-architecture.jpg' },
+    ],
   },
   {
     slug: 'okurmen-testing-platform',
@@ -135,6 +142,7 @@ export const PROJECT_BASES: ProjectBase[] = [
     // Set VITE_COVER_STUDIO_VIDEO_ID once the presentation is on YouTube; until then a placeholder is shown.
     youtubeId: parseYouTubeId(import.meta.env.VITE_COVER_STUDIO_VIDEO_ID),
     videoEnvVar: 'VITE_COVER_STUDIO_VIDEO_ID',
+    videoPoster: '/img/cover-studio-youtube-thumbnail.jpg',
     stack: ['React 19', 'TypeScript', 'Vite', 'Tailwind CSS 4', 'Zustand', 'Fabric.js 7', 'jsPDF', 'React Router 7', 'Lucide React'],
     endpoints: [],
     github: 'https://github.com/Islam0122/cover-studio-okurmenkids',
@@ -157,7 +165,7 @@ export function getProjects(locale: Locale): Project[] {
 
   const texts = DICTIONARIES[locale].projects
   const projects = PROJECT_BASES.map((base): Project => {
-    const { productionUrls = [], youtubeId, videoEnvVar, diagram, production, ...facts } = base
+    const { productionUrls = [], youtubeId, videoPoster, videoEnvVar, diagram, production, ...facts } = base
     const { endpointNotes, imageAlts, productionLinks = [], capabilities = [], operations = [], videoTitle, ...text } =
       texts[base.slug]
     return {
@@ -173,8 +181,9 @@ export function getProjects(locale: Locale): Project[] {
       })),
       capabilities,
       operations,
-      video: youtubeId ? { youtubeId, title: videoTitle ?? text.title } : null,
-      videoPending: !youtubeId && videoEnvVar ? { envVar: videoEnvVar, title: videoTitle ?? text.title } : null,
+      video: youtubeId ? { youtubeId, title: videoTitle ?? text.title, poster: videoPoster ?? null } : null,
+      videoPending:
+        !youtubeId && videoEnvVar ? { envVar: videoEnvVar, title: videoTitle ?? text.title, poster: videoPoster ?? null } : null,
       diagram: diagram ?? null,
     }
   })

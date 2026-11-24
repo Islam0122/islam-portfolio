@@ -85,7 +85,13 @@ const projects: Record<ProjectSlug, ProjectText> = {
       'The repository has no CI pipeline; tests run locally.',
       'Admin, LMS and training portal content behind sign-in is not shown publicly.',
     ],
-    imageAlts: ['OkurmenKIDS LMS: a completed lesson with attendance, homework and lesson details in the trainer’s cabinet'],
+    imageAlts: [
+      'okurmenkids.com: the public website’s home page with the hero section and enrollment buttons',
+      'OkurmenKIDS Schedule: the public day view with lessons by room and trainer',
+      'training.okurmenkids.com: the training portal home page with training tests by subject',
+      'OkurmenKIDS LMS: a completed lesson with attendance, homework and lesson details in the trainer’s cabinet',
+      'Architecture slide: three Vercel frontends and Django Admin connected to the Django REST API on Railway with PostgreSQL, a media volume, Celery tasks and a cron service',
+    ],
     productionLinks: [
       { label: 'Public website', description: 'okurmenkids.com: courses, projects, events, news and enrollment' },
       { label: 'LMS', description: 'lms.okurmenkids.com: staff cabinets, schedule, attendance, exams, finance' },

@@ -44,8 +44,9 @@ export interface ProjectBase {
   /** Running in production, with live URLs listed in productionUrls. */
   production?: boolean
   productionUrls?: string[]
-  /** YouTube video id. */
+  /** YouTube video id and a local poster image shown before the player loads. */
   youtubeId?: string
+  videoPoster?: string
   /**
    * Build-time environment variable that supplies the YouTube id (e.g. VITE_COVER_STUDIO_VIDEO_ID).
    * While it is empty, the project shows a video placeholder instead of the player.
@@ -119,19 +120,34 @@ export interface Project {
   productionLinks: ProductionLink[]
   capabilities: { title: string; body: string }[]
   operations: string[]
-  video: { youtubeId: string; title: string } | null
+  video: { youtubeId: string; title: string; poster: string | null } | null
   /** A demo video is planned but its id is not configured yet: render a placeholder. */
-  videoPending: { envVar: string; title: string } | null
+  videoPending: { envVar: string; title: string; poster: string | null } | null
   diagram: ProjectDiagram | null
+}
+
+/** A measurable outcome, always labelled with where the figure comes from. */
+export interface ExperienceResult {
+  value: string
+  label: string
+  source: MetricSource
 }
 
 export interface ExperienceEntry {
   company: string
+  /** Two-letter text mark shown in place of a logo. */
+  monogram: string
   role: string
   period: string
   location: string
+  /** Only when a source states it; omitted otherwise. */
+  employmentType?: string
+  current: boolean
   summary: string
-  highlights: string[]
+  /** What was built and how: one line per area of work. */
+  responsibilities: { title: string; text: string }[]
+  results: ExperienceResult[]
+  stack: string[]
   projectSlugs: ProjectSlug[]
 }
 

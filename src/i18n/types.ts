@@ -87,6 +87,7 @@ export interface UiStrings {
     githubLabel: (projectTitle: string) => string
     watchDemo: string
     watchDemoLabel: (projectTitle: string) => string
+    videoBadge: string
   }
   projects: {
     meta: PageMeta
@@ -162,7 +163,15 @@ export interface UiStrings {
     eyebrow: string
     title: string
     intro: string
-    relatedCaseStudies: string
+    overview: { label: string; value: string }[]
+    timelineLabel: string
+    current: string
+    responsibilities: string
+    results: string
+    resultsNote: string
+    stack: string
+    relatedProjects: string
+    openCaseStudy: (projectTitle: string) => string
     educationTitle: string
     cvTitle: string
     cvBody: string
