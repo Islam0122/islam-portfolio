@@ -20,7 +20,7 @@ export const PROJECT_BASES: ProjectBase[] = [
       'https://api.okurmenkids.com',
       'https://api.okurmenkids.com/admin/',
     ],
-    youtubeId: 'abJjnBRLFW8',
+    youtubeId: 'dAkMQGZ9_4o',
     diagram: 'okurmenkids',
     stack: [
       'Python',
