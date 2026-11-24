@@ -82,6 +82,8 @@ export interface UiStrings {
   projectCard: {
     technologies: string
     readCaseStudy: string
+    videoBadge: string
+    videoPendingBadge: string
   }
   projects: {
     meta: PageMeta
@@ -96,6 +98,17 @@ export interface UiStrings {
   project: {
     metaTitle: (projectTitle: string) => string
     notFoundMeta: PageMeta
+    overview: string
+    services: string
+    servicesIntro: string
+    video: string
+    videoIntro: string
+    playVideo: (projectTitle: string) => string
+    videoFrameTitle: (projectTitle: string) => string
+    videoPrivacy: string
+    watchOnYouTube: string
+    videoPendingTitle: string
+    videoPendingBody: string
     myRole: string
     context: string
     liveDemo: string

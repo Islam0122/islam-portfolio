@@ -37,6 +37,15 @@ Copy `.env.example` to `.env` (or set environment variables in your host) and se
 
 - `VITE_SITE_URL` — the production origin, for example `https://your-domain.example`. When set, the build adds canonical URLs, absolute Open Graph URLs and `dist/sitemap.xml`, and appends a `Sitemap:` line to `robots.txt`. Without it these are skipped, because the production domain is not configured yet.
 
+### OkurmenKIDS video (`VITE_OKURMENKIDS_YOUTUBE_VIDEO_ID`)
+
+The OkurmenKIDS case study (`/projects/okurmenkids`) and its project card show a YouTube walkthrough.
+
+- Set `VITE_OKURMENKIDS_YOUTUBE_VIDEO_ID` to the 11-character video ID (the `xxxxxxxxxxx` in `https://www.youtube.com/watch?v=xxxxxxxxxxx`) in `.env` or in the host's environment variables, then rebuild.
+- While it is empty (or not a valid ID), the page shows a poster with a clearly marked “Video coming soon” placeholder; no player or YouTube link is rendered.
+- The player is click-to-load: nothing is requested from YouTube until the visitor presses play, and the iframe uses `youtube-nocookie.com`.
+- The ID is parsed in `src/data/video.ts` (`OKURMENKIDS_YOUTUBE_VIDEO_ID`); the poster is `public/img/okurmenkids-youtube-thumbnail.jpg`.
+
 ## Deployment
 
 The app uses client-side routing with `BrowserRouter`, so the host must serve `index.html` for every path:

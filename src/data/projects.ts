@@ -1,4 +1,5 @@
 import type { Project, ProjectBase } from '../types'
+import { OKURMENKIDS_YOUTUBE_VIDEO_ID } from './video'
 import type { Locale } from '../i18n/config'
 import { DICTIONARIES } from '../i18n/dictionaries'
 
@@ -8,6 +9,50 @@ import { DICTIONARIES } from '../i18n/dictionaries'
  * scripts/generate-sitemap.mjs reads the `slug:` lines of this file.
  */
 export const PROJECT_BASES: ProjectBase[] = [
+  {
+    slug: 'okurmenkids',
+    category: 'Professional',
+    featured: true,
+    stack: [
+      'Python',
+      'Django',
+      'Django REST Framework',
+      'PostgreSQL',
+      'Celery',
+      'Redis',
+      'React 19',
+      'TypeScript',
+      'Vite',
+      'Docker',
+      'Railway',
+      'Vercel',
+    ],
+    endpoints: [
+      { method: 'GET', path: '/api/v1/' },
+      { method: 'GET', path: '/api/v1/public/site/home/' },
+      { method: 'GET', path: '/api/v1/public/schedule/' },
+      { method: 'GET', path: '/api/v1/training/tests/' },
+      { method: 'POST', path: '/api/v1/training/attempts/' },
+      { method: 'POST', path: '/api/v1/training/attempts/{id}/submit/' },
+      { method: 'GET', path: '/api/schema/' },
+    ],
+    github: 'https://github.com/Islam0122/OkurmenKIDS',
+    live: 'https://okurmenkids.com',
+    images: [
+      { src: '/img/okurmenkids-website.jpg' },
+      { src: '/img/okurmenkids-lms-schedule.jpg' },
+      { src: '/img/okurmenkids-training-portal.jpg' },
+      { src: '/img/okurmenkids-architecture.jpg' },
+    ],
+    services: [
+      { url: 'https://okurmenkids.com' },
+      { url: 'https://lms.okurmenkids.com' },
+      { url: 'https://api.okurmenkids.com/admin/' },
+      { url: 'https://api.okurmenkids.com' },
+      { url: 'https://training.okurmenkids.com' },
+    ],
+    video: { youtubeId: OKURMENKIDS_YOUTUBE_VIDEO_ID, poster: '/img/okurmenkids-youtube-thumbnail.jpg' },
+  },
   {
     slug: 'okurmen-testing-platform',
     category: 'Professional',
@@ -39,6 +84,8 @@ export const PROJECT_BASES: ProjectBase[] = [
     github: 'https://github.com/Islam0122/OkurmenKidsTEST',
     live: null,
     images: [{ src: '/img/okurmen-platform-laptop.jpg' }],
+    services: [],
+    video: null,
   },
   {
     slug: 'access-control-system',
@@ -59,6 +106,8 @@ export const PROJECT_BASES: ProjectBase[] = [
     github: 'https://github.com/Islam0122/AccessControlSystem',
     live: null,
     images: [],
+    services: [],
+    video: null,
   },
   {
     slug: 'jobpulse',
@@ -69,6 +118,8 @@ export const PROJECT_BASES: ProjectBase[] = [
     github: 'https://github.com/Islam0122/JobPulse',
     live: null,
     images: [],
+    services: [],
+    video: null,
   },
   {
     slug: 'cover-studio',
@@ -79,6 +130,8 @@ export const PROJECT_BASES: ProjectBase[] = [
     github: 'https://github.com/Islam0122/cover-studio-okurmenkids',
     live: null,
     images: [{ src: '/img/cover-studio-editor.png' }, { src: '/img/cover-studio-gallery.png' }],
+    services: [],
+    video: null,
   },
 ]
 
@@ -91,10 +144,11 @@ export function getProjects(locale: Locale): Project[] {
 
   const texts = DICTIONARIES[locale].projects
   const projects = PROJECT_BASES.map((base): Project => {
-    const { endpointNotes, imageAlts, ...text } = texts[base.slug]
+    const { endpointNotes, imageAlts, services, ...text } = texts[base.slug]
     return {
       ...base,
       ...text,
+      services: base.services.map((svc, i) => ({ url: svc.url, name: services[i]?.name ?? svc.url, purpose: services[i]?.purpose ?? '' })),
       endpoints: base.endpoints.map((e, i) => ({ ...e, note: endpointNotes[i] ?? '' })),
       images: base.images.map((img, i) => ({ ...img, alt: imageAlts[i] ?? '' })),
     }

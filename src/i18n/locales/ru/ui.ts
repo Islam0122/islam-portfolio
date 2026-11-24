@@ -66,6 +66,8 @@ const ui: UiStrings = {
   projectCard: {
     technologies: 'Технологии',
     readCaseStudy: 'Читать кейс',
+    videoBadge: 'Видео',
+    videoPendingBadge: 'Видео · скоро',
   },
   projects: {
     meta: {
@@ -88,6 +90,17 @@ const ui: UiStrings = {
       title: 'Проект не найден — Ислам Дуйшобаев',
       description: 'Такого кейса не существует.',
     },
+    overview: 'Обзор',
+    services: 'Продакшен-сервисы',
+    servicesIntro: 'Все пять сервисов работают. Каждая ссылка открывается в новой вкладке.',
+    video: 'Видеообзор',
+    videoIntro: '6-минутный обзор пяти продакшен-сервисов, API и архитектуры деплоя.',
+    playVideo: (projectTitle) => `Смотреть видео: ${projectTitle}`,
+    videoFrameTitle: (projectTitle) => `${projectTitle} — видеообзор (YouTube)`,
+    videoPrivacy: 'Плеер загружается с youtube-nocookie.com только после нажатия на кнопку воспроизведения.',
+    watchOnYouTube: 'Смотреть на YouTube',
+    videoPendingTitle: 'Видео скоро появится',
+    videoPendingBody: 'Видеообзор готов и появится здесь после публикации на YouTube.',
     myRole: 'Моя роль',
     context: 'Контекст',
     liveDemo: 'Демо',

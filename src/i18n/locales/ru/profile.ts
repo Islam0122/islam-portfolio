@@ -40,7 +40,7 @@ const profile: ProfileContent = {
         'CRM и автоматизация: инструменты управления учениками, административные процессы и уведомления; автоматизировано до 70% рутинных административных операций (резюме).',
         'Certificate Cover Studio: управление шаблонами, бизнес-логика и пользовательские интерфейсы.',
       ],
-      projectSlugs: ['okurmen-testing-platform', 'cover-studio'],
+      projectSlugs: ['okurmenkids', 'okurmen-testing-platform', 'cover-studio'],
     },
     {
       company: 'GEEKSPRO',

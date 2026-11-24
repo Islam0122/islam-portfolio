@@ -1,6 +1,6 @@
 export type ProjectCategory = 'Professional' | 'Personal' | 'Learning'
 
-export type ProjectSlug = 'okurmen-testing-platform' | 'access-control-system' | 'jobpulse' | 'cover-studio'
+export type ProjectSlug = 'okurmenkids' | 'okurmen-testing-platform' | 'access-control-system' | 'jobpulse' | 'cover-studio'
 
 export type MetricSource = 'CV' | 'Repository'
 
@@ -13,6 +13,20 @@ export interface Endpoint {
 export interface ProjectImage {
   src: string
   alt: string
+}
+
+/** A video walkthrough. `youtubeId` is null until the video is uploaded; the UI then shows a placeholder. */
+export interface ProjectVideo {
+  youtubeId: string | null
+  /** Poster image in public/, shown before the player loads and on the project card. */
+  poster: string
+}
+
+/** A production service of a project, e.g. the public website or the API. */
+export interface ProjectService {
+  url: string
+  name: string
+  purpose: string
 }
 
 export interface ProjectMetric {
@@ -31,6 +45,9 @@ export interface ProjectBase {
   github: string
   live: string | null
   images: Omit<ProjectImage, 'alt'>[]
+  /** Production services (URL only); names and purposes are per language in ProjectText.services. */
+  services: Pick<ProjectService, 'url'>[]
+  video: ProjectVideo | null
 }
 
 /** Everything about a project that is written for the reader, per language. */
@@ -56,6 +73,8 @@ export interface ProjectText {
   unavailable: string[]
   /** One alt text per entry of ProjectBase.images, in the same order. */
   imageAlts: string[]
+  /** One name + purpose per entry of ProjectBase.services, in the same order. */
+  services: Omit<ProjectService, 'url'>[]
 }
 
 /** A project as rendered: base facts merged with the texts of the active language. */
@@ -82,6 +101,8 @@ export interface Project {
   github: string
   live: string | null
   images: ProjectImage[]
+  services: ProjectService[]
+  video: ProjectVideo | null
 }
 
 export interface ExperienceEntry {

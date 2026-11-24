@@ -66,6 +66,8 @@ const ui: UiStrings = {
   projectCard: {
     technologies: 'Technologies',
     readCaseStudy: 'Read case study',
+    videoBadge: 'Video',
+    videoPendingBadge: 'Video · coming soon',
   },
   projects: {
     meta: {
@@ -88,6 +90,17 @@ const ui: UiStrings = {
       title: 'Project not found — Islam Duishobaev',
       description: 'This project case study does not exist.',
     },
+    overview: 'Overview',
+    services: 'Production services',
+    servicesIntro: 'All five services are live. Each link opens in a new tab.',
+    video: 'Video walkthrough',
+    videoIntro: 'A 6-minute tour of the five production services, the API and the deployment architecture.',
+    playVideo: (projectTitle) => `Play the ${projectTitle} video`,
+    videoFrameTitle: (projectTitle) => `${projectTitle} — video walkthrough (YouTube)`,
+    videoPrivacy: 'The player loads from youtube-nocookie.com only after you press play.',
+    watchOnYouTube: 'Watch on YouTube',
+    videoPendingTitle: 'Video coming soon',
+    videoPendingBody: 'The walkthrough is produced and will appear here once it is published on YouTube.',
     myRole: 'My role',
     context: 'Context',
     liveDemo: 'Live demo',

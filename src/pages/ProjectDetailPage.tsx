@@ -1,10 +1,11 @@
 import type { ReactNode } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import { ExternalLink, GitBranch } from 'lucide-react'
+import { ExternalLink, GitBranch, Globe } from 'lucide-react'
 import { useDocumentMeta } from '../lib/useDocumentMeta'
 import { getProject } from '../data/projects'
 import { useI18n } from '../i18n'
 import Breadcrumbs from '../components/Breadcrumbs'
+import YouTubeEmbed from '../components/YouTubeEmbed'
 import { Card, Tag } from '../components/Section'
 import NotFoundPage from './NotFoundPage'
 
@@ -73,10 +74,13 @@ export default function ProjectDetailPage() {
             <dt className="text-xs uppercase tracking-wider text-muted">{s.myRole}</dt>
             <dd className="mt-1 text-sm font-medium text-ink">{project.role}</dd>
           </div>
-          <div>
-            <dt className="text-xs uppercase tracking-wider text-muted">{s.context}</dt>
-            <dd className="mt-1 text-sm text-ink">{project.context}</dd>
-          </div>
+          {/* Projects with a service list show the context in the Overview section below instead. */}
+          {project.services.length === 0 && (
+            <div>
+              <dt className="text-xs uppercase tracking-wider text-muted">{s.context}</dt>
+              <dd className="mt-1 text-sm text-ink">{project.context}</dd>
+            </div>
+          )}
           <div>
             <dt className="text-xs uppercase tracking-wider text-muted">{s.liveDemo}</dt>
             <dd className="mt-1 text-sm text-ink">{project.live ?? s.notAvailable}</dd>
@@ -113,6 +117,46 @@ export default function ProjectDetailPage() {
         </ul>
       </header>
 
+      {project.video && (
+        <section aria-labelledby="video-h" className="mt-12">
+          <h2 id="video-h" className="text-2xl font-semibold tracking-tight text-ink">{s.video}</h2>
+          <p className="mt-2 mb-5 text-base leading-7 text-muted">{s.videoIntro}</p>
+          <YouTubeEmbed video={project.video} title={project.title} />
+        </section>
+      )}
+
+      {project.services.length > 0 && (
+        <Block id="services" title={s.services}>
+          <p className="mb-5 text-sm">{s.servicesIntro}</p>
+          <ul className="grid gap-3">
+            {project.services.map((svc, i) => (
+              <li key={svc.url}>
+                <a
+                  href={svc.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="group flex flex-col gap-2 rounded-2xl border border-line bg-surface p-4 transition hover:border-accent sm:flex-row sm:items-center sm:gap-4 sm:p-5"
+                >
+                  <span aria-hidden="true" className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-surface-2 font-mono text-sm font-semibold text-accent">
+                    {i + 1}
+                  </span>
+                  <span className="min-w-0 flex-1">
+                    <span className="block font-semibold text-ink">{svc.name}</span>
+                    <span className="mt-1 block text-sm leading-6 text-muted">{svc.purpose}</span>
+                  </span>
+                  <span className="inline-flex min-w-0 items-center gap-1.5 font-mono text-xs text-ink sm:text-sm">
+                    <Globe size={14} aria-hidden="true" className="shrink-0 text-accent" />
+                    <span className="break-all">{svc.url.replace(/^https:\/\//, '')}</span>
+                    <ExternalLink size={14} aria-hidden="true" className="shrink-0 opacity-60 transition group-hover:opacity-100" />
+                  </span>
+                  <span className="sr-only"> {t.ui.common.opensInNewTab}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </Block>
+      )}
+
       {project.images.length > 0 && (
         <div className="mt-10 grid gap-4 md:grid-cols-2">
           {project.images.map((img) => (
@@ -123,6 +167,11 @@ export default function ProjectDetailPage() {
         </div>
       )}
 
+      {project.services.length > 0 && (
+        <Block id="overview" title={s.overview}>
+          <p>{project.context}</p>
+        </Block>
+      )}
       <Block id="problem" title={s.problem}>
         <p>{project.problem}</p>
       </Block>

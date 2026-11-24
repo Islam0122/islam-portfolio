@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { ArrowUpRight } from 'lucide-react'
+import { ArrowUpRight, Clapperboard, Play } from 'lucide-react'
 import type { Project } from '../types'
 import { useI18n } from '../i18n'
 import { Tag } from './Section'
@@ -8,6 +8,19 @@ export default function ProjectCard({ project }: { project: Project }) {
   const { t } = useI18n()
   return (
     <article className="group relative flex flex-col rounded-2xl border border-line bg-surface p-6 transition hover:border-accent">
+      {project.video && (
+        <div className="relative -mx-6 -mt-6 mb-5 aspect-video overflow-hidden rounded-t-2xl border-b border-line bg-surface-2">
+          <img src={project.video.poster} alt="" loading="lazy" decoding="async" className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.02]" />
+          <span className="absolute inset-0 flex items-center justify-center" aria-hidden="true">
+            <span className="flex h-12 w-12 items-center justify-center rounded-full bg-black/60 text-white ring-2 ring-white/40 backdrop-blur transition group-hover:bg-accent group-hover:text-accent-ink">
+              {project.video.youtubeId ? <Play size={20} fill="currentColor" className="translate-x-0.5" /> : <Clapperboard size={20} />}
+            </span>
+          </span>
+          <span className="absolute right-3 top-3 rounded-full bg-black/65 px-2.5 py-1 font-mono text-[11px] uppercase tracking-wider text-white">
+            {project.video.youtubeId ? t.ui.projectCard.videoBadge : t.ui.projectCard.videoPendingBadge}
+          </span>
+        </div>
+      )}
       <div className="flex items-center justify-between gap-3">
         <span className="font-mono text-xs uppercase tracking-wider text-accent">{t.ui.categories[project.category]}</span>
         <span className="text-xs text-muted">{project.period}</span>
