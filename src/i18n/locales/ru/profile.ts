@@ -28,34 +28,76 @@ const profile: ProfileContent = {
   experience: [
     {
       company: 'OKURMEN IT',
+      monogram: 'OK',
       role: 'Full Stack разработчик (Python / React)',
       period: 'Янв 2024 — н. в.',
       location: 'Бишкек, Кыргызстан',
+      current: true,
       summary:
-        'Разработка и поддержка веб-продуктов и внутренних IT-систем образовательной организации: backend и frontend, интеграции и развёртывание.',
-      highlights: [
-        'Продакшн-платформа OkurmenKIDS: публичный сайт, LMS, тренировочный портал и Django Admin на одном Django REST API с PostgreSQL и задачами Celery; развёрнута на Railway и Vercel и переведена на okurmenkids.com с поддоменами api., lms. и training.',
-        'LMS: backend-сервисы на Django и DRF, интерфейсы на React для учеников, преподавателей, групп, курсов и учебных материалов, а также инструменты администрирования, аналитика и отчётность.',
-        'Платформа онлайн-тестирования: тесты с таймером, автоматический подсчёт баллов, XP, достижения и рейтинги. Проведено более 500 тестовых сессий (резюме).',
-        'AI Code Checker: интеграция с GigaChat API и фоновая обработка через Celery и Redis; время проверки домашних заданий сократилось с нескольких часов примерно до 20–30 минут (резюме).',
-        'CRM и автоматизация: инструменты управления учениками, административные процессы и уведомления; автоматизировано до 70% рутинных административных операций (резюме).',
-        'Certificate Cover Studio: управление шаблонами, бизнес-логика и пользовательские интерфейсы.',
+        'Веб-продукты и внутренние IT-системы образовательной организации: backend и frontend, интеграции и развёртывание.',
+      responsibilities: [
+        {
+          title: 'Платформа OkurmenKIDS',
+          text: 'Публичный сайт, LMS, тренировочный портал и Django Admin на одном Django REST API с PostgreSQL и задачами Celery. Развёрнута на Railway и Vercel и переведена на okurmenkids.com с поддоменами api., lms. и training.',
+        },
+        {
+          title: 'LMS',
+          text: 'Backend-сервисы на Django и DRF, интерфейсы на React для учеников, преподавателей, групп, курсов и учебных материалов, а также инструменты администрирования, аналитика и отчётность.',
+        },
+        {
+          title: 'Онлайн-тестирование',
+          text: 'Тесты с таймером, автоматический подсчёт баллов, XP, достижения и рейтинги, AI-проверка ответов.',
+        },
+        {
+          title: 'AI Code Checker',
+          text: 'Интеграция с GigaChat API и фоновая обработка через Celery и Redis.',
+        },
+        {
+          title: 'CRM и автоматизация',
+          text: 'Инструменты управления учениками, административные процессы и уведомления.',
+        },
+        {
+          title: 'Certificate Cover Studio',
+          text: 'Управление шаблонами, бизнес-логика и пользовательские интерфейсы.',
+        },
       ],
+      results: [
+        { value: '5', label: 'продакшн-адресов платформы OkurmenKIDS на одном API', source: 'Repository' },
+        { value: '500+', label: 'тестовых сессий проведено на платформе тестирования', source: 'CV' },
+        { value: '20–30 мин', label: 'на проверку домашних заданий с AI-проверкой вместо нескольких часов', source: 'CV' },
+        { value: 'до 70%', label: 'рутинных административных операций автоматизировано', source: 'CV' },
+      ],
+      stack: ['Python', 'Django', 'Django REST Framework', 'PostgreSQL', 'Celery', 'Redis', 'GigaChat API', 'React', 'TypeScript', 'Docker', 'Railway', 'Vercel'],
       projectSlugs: ['okurmenkids', 'okurmen-testing-platform', 'cover-studio'],
     },
     {
       company: 'GEEKSPRO',
+      monogram: 'GP',
       role: 'Python Backend разработчик',
       period: 'Окт 2023 — дек 2023',
       location: 'Бишкек, Кыргызстан',
-      summary: 'Backend-разработка WMS для пивоварни «Колос» — системы автоматизации складского и финансового учёта.',
-      highlights: [
-        'Разработал более 40 эндпоинтов REST API на Django REST Framework.',
-        'Реализовал операции с товарами, дистрибьюторами, транзакциями и складом, включая перемещение между статусами «норма» и «брак».',
-        'Добавил аудит изменений через django-simple-history и защиту от перебора паролей через Django Axes.',
-        'Реализовал генерацию PDF-документов для накладных и возвратов; использовал транзакции БД для целостности финансовых данных.',
-        'Оптимизировал запросы к PostgreSQL и Django ORM с помощью select_related, prefetch_related и Q-объектов.',
+      current: false,
+      summary: 'Backend WMS для пивоварни «Колос» — системы автоматизации складского и финансового учёта.',
+      responsibilities: [
+        {
+          title: 'Складские операции',
+          text: 'Товары, дистрибьюторы, транзакции и складские операции, включая перемещение между статусами «норма» и «брак».',
+        },
+        {
+          title: 'Безопасность и аудит',
+          text: 'История изменений через django-simple-history и защита от перебора паролей через Django Axes.',
+        },
+        {
+          title: 'Финансовые документы',
+          text: 'PDF-накладные и возвраты; транзакции БД для целостности финансовых операций.',
+        },
+        {
+          title: 'Производительность запросов',
+          text: 'Оптимизация запросов к PostgreSQL и Django ORM через select_related, prefetch_related и Q-объекты.',
+        },
       ],
+      results: [{ value: '40+', label: 'эндпоинтов REST API на Django REST Framework', source: 'CV' }],
+      stack: ['Python', 'Django', 'Django REST Framework', 'PostgreSQL', 'django-simple-history', 'Django Axes'],
       projectSlugs: [],
     },
   ],
