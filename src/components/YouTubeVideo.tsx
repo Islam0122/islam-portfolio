@@ -6,7 +6,7 @@ import { useI18n } from '../i18n'
  * Click-to-load YouTube player: shows the thumbnail first and loads the
  * youtube-nocookie iframe only after the visitor presses play.
  */
-export default function YouTubeVideo({ id, title }: { id: string; title: string }) {
+export default function YouTubeVideo({ id, title, poster }: { id: string; title: string; poster?: string | null }) {
   const { t } = useI18n()
   const [playing, setPlaying] = useState(false)
 
@@ -28,7 +28,7 @@ export default function YouTubeVideo({ id, title }: { id: string; title: string 
           className="group absolute inset-0 h-full w-full"
         >
           <img
-            src={`https://i.ytimg.com/vi/${id}/hqdefault.jpg`}
+            src={poster ?? `https://i.ytimg.com/vi/${id}/hqdefault.jpg`}
             alt=""
             loading="lazy"
             decoding="async"

@@ -21,6 +21,7 @@ export const PROJECT_BASES: ProjectBase[] = [
       'https://api.okurmenkids.com/admin/',
     ],
     youtubeId: 'dAkMQGZ9_4o',
+    videoPoster: '/img/okurmenkids-youtube-thumbnail.jpg',
     diagram: 'okurmenkids',
     stack: [
       'Python',
@@ -58,7 +59,13 @@ export const PROJECT_BASES: ProjectBase[] = [
     ],
     github: 'https://github.com/Islam0122/OkurmenKIDS',
     live: 'https://okurmenkids.com',
-    images: [{ src: '/img/okurmenkids-lms-lesson.png' }],
+    images: [
+      { src: '/img/okurmenkids-website.jpg' },
+      { src: '/img/okurmenkids-lms-schedule.jpg' },
+      { src: '/img/okurmenkids-training-portal.jpg' },
+      { src: '/img/okurmenkids-lms-lesson.png' },
+      { src: '/img/okurmenkids-architecture.jpg' },
+    ],
   },
   {
     slug: 'okurmen-testing-platform',
@@ -143,7 +150,7 @@ export function getProjects(locale: Locale): Project[] {
 
   const texts = DICTIONARIES[locale].projects
   const projects = PROJECT_BASES.map((base): Project => {
-    const { productionUrls = [], youtubeId, diagram, production, ...facts } = base
+    const { productionUrls = [], youtubeId, videoPoster, diagram, production, ...facts } = base
     const { endpointNotes, imageAlts, productionLinks = [], capabilities = [], operations = [], videoTitle, ...text } =
       texts[base.slug]
     return {
@@ -159,7 +166,7 @@ export function getProjects(locale: Locale): Project[] {
       })),
       capabilities,
       operations,
-      video: youtubeId ? { youtubeId, title: videoTitle ?? text.title } : null,
+      video: youtubeId ? { youtubeId, title: videoTitle ?? text.title, poster: videoPoster ?? null } : null,
       diagram: diagram ?? null,
     }
   })

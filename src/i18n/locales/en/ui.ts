@@ -67,6 +67,7 @@ const ui: UiStrings = {
     technologies: 'Technologies',
     readCaseStudy: 'Read case study',
     inProduction: 'In production',
+    videoBadge: 'Video',
   },
   projects: {
     meta: {
