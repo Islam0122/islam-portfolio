@@ -119,13 +119,28 @@ export interface Project {
   diagram: ProjectDiagram | null
 }
 
+/** A measurable outcome, always labelled with where the figure comes from. */
+export interface ExperienceResult {
+  value: string
+  label: string
+  source: MetricSource
+}
+
 export interface ExperienceEntry {
   company: string
+  /** Two-letter text mark shown in place of a logo. */
+  monogram: string
   role: string
   period: string
   location: string
+  /** Only when a source states it; omitted otherwise. */
+  employmentType?: string
+  current: boolean
   summary: string
-  highlights: string[]
+  /** What was built and how: one line per area of work. */
+  responsibilities: { title: string; text: string }[]
+  results: ExperienceResult[]
+  stack: string[]
   projectSlugs: ProjectSlug[]
 }
 

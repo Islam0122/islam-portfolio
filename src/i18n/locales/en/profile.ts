@@ -28,34 +28,76 @@ const profile: ProfileContent = {
   experience: [
     {
       company: 'OKURMEN IT',
+      monogram: 'OK',
       role: 'Full Stack Developer (Python / React)',
       period: 'Jan 2024 – present',
       location: 'Bishkek, Kyrgyzstan',
+      current: true,
       summary:
-        'Development and maintenance of web products and internal IT systems for an educational organisation. Backend and front-end work, integrations and deployment.',
-      highlights: [
-        'OkurmenKIDS production platform: a public website, an LMS, a training portal and Django Admin on one Django REST API with PostgreSQL and Celery jobs; deployed on Railway and Vercel and moved to okurmenkids.com with its api., lms. and training. subdomains.',
-        'LMS: backend services on Django and DRF, React interfaces for students, teachers, groups, courses and materials, plus admin tooling, analytics and reporting.',
-        'Online testing platform: timed tests, automatic scoring, XP, achievements and ratings. More than 500 test sessions run (CV).',
-        'AI Code Checker: GigaChat API integration with background processing through Celery and Redis; cut homework check time from several hours to roughly 20–30 minutes (CV).',
-        'CRM and automation: student management tools, administrative workflows and notifications; automated up to 70% of routine administrative operations (CV).',
-        'Certificate Cover Studio: template management, business logic and user interfaces.',
+        'Web products and internal IT systems for an educational organisation: backend and front-end development, integrations and deployment.',
+      responsibilities: [
+        {
+          title: 'OkurmenKIDS platform',
+          text: 'A public website, an LMS, a training portal and Django Admin on one Django REST API with PostgreSQL and Celery jobs. Deployed on Railway and Vercel and moved to okurmenkids.com with its api., lms. and training. subdomains.',
+        },
+        {
+          title: 'LMS',
+          text: 'Backend services on Django and DRF, React interfaces for students, teachers, groups, courses and study materials, plus admin tooling, analytics and reporting.',
+        },
+        {
+          title: 'Online testing',
+          text: 'Timed tests, automatic scoring, XP, achievements and ratings, with AI-assisted answer checking.',
+        },
+        {
+          title: 'AI Code Checker',
+          text: 'GigaChat API integration with background processing through Celery and Redis.',
+        },
+        {
+          title: 'CRM and automation',
+          text: 'Student management tools, administrative workflows and notifications.',
+        },
+        {
+          title: 'Certificate Cover Studio',
+          text: 'Template management, business logic and user interfaces.',
+        },
       ],
+      results: [
+        { value: '5', label: 'production URLs of the OkurmenKIDS platform served by one API', source: 'Repository' },
+        { value: '500+', label: 'test sessions run on the testing platform', source: 'CV' },
+        { value: '20–30 min', label: 'homework check time with the AI checker, down from several hours', source: 'CV' },
+        { value: 'up to 70%', label: 'of routine administrative operations automated', source: 'CV' },
+      ],
+      stack: ['Python', 'Django', 'Django REST Framework', 'PostgreSQL', 'Celery', 'Redis', 'GigaChat API', 'React', 'TypeScript', 'Docker', 'Railway', 'Vercel'],
       projectSlugs: ['okurmenkids', 'okurmen-testing-platform', 'cover-studio'],
     },
     {
       company: 'GEEKSPRO',
+      monogram: 'GP',
       role: 'Python Backend Developer',
       period: 'Oct 2023 – Dec 2023',
       location: 'Bishkek, Kyrgyzstan',
-      summary: 'Backend development for the Kolos Brewery WMS, a warehouse and finance automation system.',
-      highlights: [
-        'Built more than 40 REST API endpoints with Django REST Framework.',
-        'Implemented product, distributor, transaction and warehouse operations, including moves between “normal” and “defect” stock statuses.',
-        'Added change auditing with django-simple-history and brute-force protection with Django Axes.',
-        'Generated PDF documents for invoices and returns; used database transactions for financial integrity.',
-        'Optimised PostgreSQL and Django ORM queries with select_related, prefetch_related and Q objects.',
+      current: false,
+      summary: 'Backend for the Kolos Brewery WMS, a warehouse and finance automation system.',
+      responsibilities: [
+        {
+          title: 'Warehouse operations',
+          text: 'Products, distributors, transactions and stock operations, including moves between “normal” and “defect” stock statuses.',
+        },
+        {
+          title: 'Security and auditing',
+          text: 'Change history with django-simple-history and brute-force protection with Django Axes.',
+        },
+        {
+          title: 'Financial documents',
+          text: 'PDF invoices and returns; database transactions to keep financial operations consistent.',
+        },
+        {
+          title: 'Query performance',
+          text: 'PostgreSQL and Django ORM queries optimised with select_related, prefetch_related and Q objects.',
+        },
       ],
+      results: [{ value: '40+', label: 'REST API endpoints built with Django REST Framework', source: 'CV' }],
+      stack: ['Python', 'Django', 'Django REST Framework', 'PostgreSQL', 'django-simple-history', 'Django Axes'],
       projectSlugs: [],
     },
   ],

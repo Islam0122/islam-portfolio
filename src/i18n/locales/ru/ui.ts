@@ -146,14 +146,27 @@ const ui: UiStrings = {
   },
   experience: {
     meta: {
-      title: 'Опыт работы — Ислам Дуйшобаев',
+      title: 'Опыт работы — Ислам Дуйшобаев, Full Stack и Python Backend разработчик',
       description:
-        'Опыт работы: Full Stack разработчик в OKURMEN IT (с 2024 года) и Python Backend разработчик в GEEKSPRO (2023). Обязанности и результаты по данным резюме.',
+        'Опыт работы Ислама Дуйшобаева: Full Stack разработчик в OKURMEN IT (с 2024 года), платформа OkurmenKIDS; Python Backend разработчик в GEEKSPRO (2023). Django, DRF, React, PostgreSQL, Celery.',
     },
     eyebrow: 'Опыт',
-    title: 'Где я работал',
-    intro: 'Результаты с пометкой «(резюме)» — собственные данные кандидата, независимо они не проверялись.',
-    relatedCaseStudies: 'Связанные кейсы:',
+    title: 'Опыт работы',
+    intro:
+      'Мой профессиональный путь в разработке программного обеспечения — от создания backend-систем до полноценных web-продуктов.',
+    overview: [
+      { label: 'Опыт', value: 'Около 3 лет (по резюме)' },
+      { label: 'Текущая позиция', value: 'Full Stack разработчик, OKURMEN IT' },
+      { label: 'Специализация', value: 'Python backend · React' },
+    ],
+    timelineLabel: 'История работы',
+    current: 'Сейчас',
+    responsibilities: 'Что я разрабатывал',
+    results: 'Ключевые результаты',
+    resultsNote: 'Данные из резюме указаны самим кандидатом и независимо не проверялись. Данные из репозитория можно проверить в исходном коде.',
+    stack: 'Стек технологий',
+    relatedProjects: 'Связанные проекты',
+    openCaseStudy: (projectTitle) => `Открыть кейс: ${projectTitle}`,
     educationTitle: 'Образование и курсы',
     cvTitle: 'Полное резюме',
     cvBody: 'В полном резюме (PDF, на русском) — вся история работы, навыки и контакты.',
