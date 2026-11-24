@@ -3,13 +3,17 @@ import { ArrowUpRight } from 'lucide-react'
 import type { Project } from '../types'
 import { useI18n } from '../i18n'
 import { Tag } from './Section'
+import ProductionBadge from './ProductionBadge'
 
 export default function ProjectCard({ project }: { project: Project }) {
   const { t } = useI18n()
   return (
     <article className="group relative flex flex-col rounded-2xl border border-line bg-surface p-6 transition hover:border-accent">
       <div className="flex items-center justify-between gap-3">
-        <span className="font-mono text-xs uppercase tracking-wider text-accent">{t.ui.categories[project.category]}</span>
+        <span className="flex flex-wrap items-center gap-2">
+          <span className="font-mono text-xs uppercase tracking-wider text-accent">{t.ui.categories[project.category]}</span>
+          {project.production && <ProductionBadge label={t.ui.projectCard.inProduction} />}
+        </span>
         <span className="text-xs text-muted">{project.period}</span>
       </div>
       <h3 className="mt-3 text-xl font-semibold text-ink">

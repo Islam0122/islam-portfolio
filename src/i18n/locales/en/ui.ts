@@ -66,12 +66,13 @@ const ui: UiStrings = {
   projectCard: {
     technologies: 'Technologies',
     readCaseStudy: 'Read case study',
+    inProduction: 'In production',
   },
   projects: {
     meta: {
       title: 'Projects — Islam Duishobaev',
       description:
-        'Case studies of real projects: an online testing platform with AI grading, an RBAC access-control API, a Telegram job finder and a certificate editor.',
+        'Case studies of real projects: the OkurmenKIDS multi-application academy platform in production, an online testing platform with AI grading, an RBAC access-control API, a Telegram job finder and a certificate editor.',
     },
     eyebrow: 'Work',
     title: 'Projects and case studies',
@@ -115,6 +116,32 @@ const ui: UiStrings = {
     unverified: 'Not verified in this write-up',
     allProjects: '← All projects',
     discuss: 'Discuss this project →',
+    inProduction: 'In production',
+    productionTitle: 'Production applications',
+    productionIntro: 'Five live addresses of one platform. All frontends call the same API.',
+    openWebsite: 'Open the website',
+    video: 'Video',
+    playVideo: (title) => `Play video: ${title}`,
+    videoNote: 'The video loads from YouTube when you press play.',
+    diagramTitle: 'System architecture',
+    diagramIntro: 'Several frontend applications connected to one centralised Django REST API. The diagram follows the code and deployment files in the repository.',
+    capabilities: 'Implemented functionality',
+    operations: 'Deployment, domains and maintenance',
+  },
+  diagram: {
+    ariaLabel: 'Architecture: the public website, LMS, training portal and Django Admin use one Django REST API, which stores data in PostgreSQL and runs background jobs through Redis and Celery.',
+    clientsLabel: 'Clients',
+    backendLabel: 'Backend',
+    dataLabel: 'Data & jobs',
+    website: { label: 'Public website', detail: 'okurmenkids.com · React 19' },
+    lms: { label: 'LMS', detail: 'lms.okurmenkids.com · React 19 · PWA' },
+    training: { label: 'Training portal', detail: 'training.okurmenkids.com · React 19' },
+    admin: { label: 'Django Admin', detail: 'api.okurmenkids.com/admin/' },
+    api: { label: 'Django REST API', detail: 'api.okurmenkids.com · DRF · SimpleJWT · 28 apps' },
+    postgres: { label: 'PostgreSQL', detail: 'Single source of truth' },
+    jobs: { label: 'Redis / Celery', detail: 'Beat schedules: billing, attendance, operations' },
+    hosting: ['Frontends: 3 Vercel projects', 'API + PostgreSQL + cron: Railway', 'DNS: okurmenkids.com'],
+    note: 'Celery uses Redis when CELERY_BROKER_URL is set; without a broker, tasks run synchronously and a Railway cron runs scheduled commands every 30 minutes.',
   },
   experience: {
     meta: {
@@ -170,6 +197,21 @@ const ui: UiStrings = {
       'A separate repository holds three Django architecture notes I wrote while studying layered and domain-driven designs: a lighter layout, a middle-strength layout, and a DDD-lite variant. Each has a setup script.',
     writeupsLink: 'Open django-architecture-lab',
     flows: [
+      {
+        title: 'OkurmenKIDS: several frontends, one API',
+        note: 'Three React applications and Django Admin share one Django REST API. Each frontend has its own domain and Vercel project; the API, database and scheduled jobs run on Railway.',
+        steps: [
+          { label: 'Website · LMS · Training', detail: 'okurmenkids.com, lms., training.' },
+          { label: 'Django REST API', detail: 'api.okurmenkids.com · JWT / public' },
+          { label: 'Service layer', detail: '28 domain apps' },
+          { label: 'PostgreSQL', detail: 'Single source of truth' },
+          { label: 'Celery Beat / cron', detail: 'Billing, attendance, operations' },
+        ],
+        source: {
+          label: 'backend/config and the three frontend apps',
+          href: 'https://github.com/Islam0122/OkurmenKIDS',
+        },
+      },
       {
         title: 'Okurmen testing platform: grading path',
         note: 'The request path stays fast; slow AI grading runs as a background job and writes its result back to the answer.',

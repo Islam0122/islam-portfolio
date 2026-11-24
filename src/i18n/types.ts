@@ -82,6 +82,7 @@ export interface UiStrings {
   projectCard: {
     technologies: string
     readCaseStudy: string
+    inProduction: string
   }
   projects: {
     meta: PageMeta
@@ -122,6 +123,32 @@ export interface UiStrings {
     unverified: string
     allProjects: string
     discuss: string
+    inProduction: string
+    productionTitle: string
+    productionIntro: string
+    openWebsite: string
+    video: string
+    playVideo: (title: string) => string
+    videoNote: string
+    diagramTitle: string
+    diagramIntro: string
+    capabilities: string
+    operations: string
+  }
+  diagram: {
+    ariaLabel: string
+    clientsLabel: string
+    backendLabel: string
+    dataLabel: string
+    website: { label: string; detail: string }
+    lms: { label: string; detail: string }
+    training: { label: string; detail: string }
+    admin: { label: string; detail: string }
+    api: { label: string; detail: string }
+    postgres: { label: string; detail: string }
+    jobs: { label: string; detail: string }
+    hosting: string[]
+    note: string
   }
   experience: {
     meta: PageMeta

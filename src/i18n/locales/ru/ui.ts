@@ -66,12 +66,13 @@ const ui: UiStrings = {
   projectCard: {
     technologies: 'Технологии',
     readCaseStudy: 'Читать кейс',
+    inProduction: 'В продакшне',
   },
   projects: {
     meta: {
       title: 'Проекты — Ислам Дуйшобаев',
       description:
-        'Кейсы реальных проектов: платформа онлайн-тестирования с AI-проверкой, API контроля доступа на RBAC, Telegram-сервис поиска вакансий и редактор сертификатов.',
+        'Кейсы реальных проектов: мультиприложенческая платформа академии OkurmenKIDS в продакшне, платформа онлайн-тестирования с AI-проверкой, API контроля доступа на RBAC, Telegram-сервис поиска вакансий и редактор сертификатов.',
     },
     eyebrow: 'Работы',
     title: 'Проекты и кейсы',
@@ -115,6 +116,32 @@ const ui: UiStrings = {
     unverified: 'Что не подтверждено в этом описании',
     allProjects: '← Все проекты',
     discuss: 'Обсудить проект →',
+    inProduction: 'В продакшне',
+    productionTitle: 'Приложения в продакшне',
+    productionIntro: 'Пять рабочих адресов одной платформы. Все frontend-приложения обращаются к одному API.',
+    openWebsite: 'Открыть сайт',
+    video: 'Видео',
+    playVideo: (title) => `Смотреть видео: ${title}`,
+    videoNote: 'Видео загружается с YouTube после нажатия на кнопку воспроизведения.',
+    diagramTitle: 'Архитектура системы',
+    diagramIntro: 'Несколько frontend-приложений, подключённых к единому Django REST API. Схема построена по коду и файлам развёртывания в репозитории.',
+    capabilities: 'Реализованная функциональность',
+    operations: 'Развёртывание, домены и сопровождение',
+  },
+  diagram: {
+    ariaLabel: 'Архитектура: публичный сайт, LMS, тренировочный портал и Django Admin работают через один Django REST API, который хранит данные в PostgreSQL и выполняет фоновые задачи через Redis и Celery.',
+    clientsLabel: 'Клиенты',
+    backendLabel: 'Backend',
+    dataLabel: 'Данные и задачи',
+    website: { label: 'Публичный сайт', detail: 'okurmenkids.com · React 19' },
+    lms: { label: 'LMS', detail: 'lms.okurmenkids.com · React 19 · PWA' },
+    training: { label: 'Тренировочный портал', detail: 'training.okurmenkids.com · React 19' },
+    admin: { label: 'Django Admin', detail: 'api.okurmenkids.com/admin/' },
+    api: { label: 'Django REST API', detail: 'api.okurmenkids.com · DRF · SimpleJWT · 28 приложений' },
+    postgres: { label: 'PostgreSQL', detail: 'Единый источник данных' },
+    jobs: { label: 'Redis / Celery', detail: 'Расписания Beat: биллинг, посещаемость, операции' },
+    hosting: ['Frontend: 3 проекта на Vercel', 'API + PostgreSQL + cron: Railway', 'DNS: okurmenkids.com'],
+    note: 'Celery использует Redis, если задан CELERY_BROKER_URL; без брокера задачи выполняются синхронно, а cron на Railway запускает плановые команды каждые 30 минут.',
   },
   experience: {
     meta: {
@@ -169,6 +196,21 @@ const ui: UiStrings = {
       'В отдельном репозитории — три заметки об архитектуре Django-проектов, написанные при изучении слоистой архитектуры и DDD: облегчённая структура, структура средней строгости и вариант DDD-lite. Для каждой есть скрипт развёртывания.',
     writeupsLink: 'Открыть django-architecture-lab',
     flows: [
+      {
+        title: 'OkurmenKIDS: несколько frontend-приложений, один API',
+        note: 'Три React-приложения и Django Admin работают с одним Django REST API. У каждого frontend свой домен и проект на Vercel; API, база данных и плановые задачи работают на Railway.',
+        steps: [
+          { label: 'Сайт · LMS · Тренировки', detail: 'okurmenkids.com, lms., training.' },
+          { label: 'Django REST API', detail: 'api.okurmenkids.com · JWT / публичный' },
+          { label: 'Сервисный слой', detail: '28 доменных приложений' },
+          { label: 'PostgreSQL', detail: 'Единый источник данных' },
+          { label: 'Celery Beat / cron', detail: 'Биллинг, посещаемость, операции' },
+        ],
+        source: {
+          label: 'backend/config и три frontend-приложения',
+          href: 'https://github.com/Islam0122/OkurmenKIDS',
+        },
+      },
       {
         title: 'Платформа тестирования Okurmen: проверка ответов',
         note: 'Запрос обрабатывается быстро: медленная AI-проверка выполняется фоновой задачей и записывает результат обратно в ответ.',

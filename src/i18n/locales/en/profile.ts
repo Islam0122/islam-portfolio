@@ -34,13 +34,14 @@ const profile: ProfileContent = {
       summary:
         'Development and maintenance of web products and internal IT systems for an educational organisation. Backend and front-end work, integrations and deployment.',
       highlights: [
+        'OkurmenKIDS production platform: a public website, an LMS, a training portal and Django Admin on one Django REST API with PostgreSQL and Celery jobs; deployed on Railway and Vercel and moved to okurmenkids.com with its api., lms. and training. subdomains.',
         'LMS: backend services on Django and DRF, React interfaces for students, teachers, groups, courses and materials, plus admin tooling, analytics and reporting.',
         'Online testing platform: timed tests, automatic scoring, XP, achievements and ratings. More than 500 test sessions run (CV).',
         'AI Code Checker: GigaChat API integration with background processing through Celery and Redis; cut homework check time from several hours to roughly 20–30 minutes (CV).',
         'CRM and automation: student management tools, administrative workflows and notifications; automated up to 70% of routine administrative operations (CV).',
         'Certificate Cover Studio: template management, business logic and user interfaces.',
       ],
-      projectSlugs: ['okurmen-testing-platform', 'cover-studio'],
+      projectSlugs: ['okurmenkids', 'okurmen-testing-platform', 'cover-studio'],
     },
     {
       company: 'GEEKSPRO',

@@ -6,6 +6,9 @@ import { getProject } from '../data/projects'
 import { useI18n } from '../i18n'
 import Breadcrumbs from '../components/Breadcrumbs'
 import { Card, Tag } from '../components/Section'
+import ProductionBadge from '../components/ProductionBadge'
+import OkurmenkidsDiagram from '../components/OkurmenkidsDiagram'
+import YouTubeVideo from '../components/YouTubeVideo'
 import NotFoundPage from './NotFoundPage'
 
 function Block({ id, title, children }: { id: string; title: string; children: ReactNode }) {
@@ -60,9 +63,12 @@ export default function ProjectDetailPage() {
       />
 
       <header>
-        <p className="font-mono text-xs uppercase tracking-[0.18em] text-accent">
-          {t.ui.categories[project.category]} · {project.period}
-        </p>
+        <div className="flex flex-wrap items-center gap-3">
+          <p className="font-mono text-xs uppercase tracking-[0.18em] text-accent">
+            {t.ui.categories[project.category]} · {project.period}
+          </p>
+          {project.production && <ProductionBadge label={s.inProduction} />}
+        </div>
         <h1 id="case-title" className="mt-3 text-4xl font-semibold tracking-tight text-ink sm:text-5xl">
           {project.title}
         </h1>
@@ -79,7 +85,16 @@ export default function ProjectDetailPage() {
           </div>
           <div>
             <dt className="text-xs uppercase tracking-wider text-muted">{s.liveDemo}</dt>
-            <dd className="mt-1 text-sm text-ink">{project.live ?? s.notAvailable}</dd>
+            <dd className="mt-1 text-sm text-ink">
+              {project.live ? (
+                <a className="break-all font-medium underline-offset-4 hover:underline" href={project.live} target="_blank" rel="noreferrer">
+                  {project.live.replace(/^https?:\/\//, '')}
+                  <span className="sr-only"> {t.ui.common.opensInNewTab}</span>
+                </a>
+              ) : (
+                s.notAvailable
+              )}
+            </dd>
           </div>
         </dl>
 
@@ -100,7 +115,7 @@ export default function ProjectDetailPage() {
               rel="noreferrer"
               className="inline-flex items-center gap-2 rounded-full border border-line px-5 py-3 text-sm font-semibold text-ink hover:border-accent"
             >
-              <ExternalLink size={16} aria-hidden="true" /> {s.liveDemoButton}
+              <ExternalLink size={16} aria-hidden="true" /> {project.production ? s.openWebsite : s.liveDemoButton}
               <span className="sr-only"> {t.ui.common.opensInNewTab}</span>
             </a>
           )}
@@ -113,8 +128,49 @@ export default function ProjectDetailPage() {
         </ul>
       </header>
 
+      {project.productionLinks.length > 0 && (
+        <section aria-labelledby="production-h" className="mt-12">
+          <h2 id="production-h" className="text-2xl font-semibold tracking-tight text-ink">{s.productionTitle}</h2>
+          <p className="mt-2 text-base leading-7 text-muted">{s.productionIntro}</p>
+          <ul className="mt-5 grid gap-3 sm:grid-cols-2">
+            {project.productionLinks.map((l) => (
+              <li key={l.url}>
+                <a
+                  href={l.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="group flex h-full items-start gap-4 rounded-2xl border border-line bg-surface p-5 transition hover:border-accent"
+                >
+                  <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-accent-soft text-accent">
+                    <ExternalLink size={18} aria-hidden="true" />
+                  </span>
+                  <span className="min-w-0">
+                    <span className="block font-semibold text-ink">{l.label}</span>
+                    <span className="mt-0.5 block break-all font-mono text-xs text-accent group-hover:underline">
+                      {l.url.replace(/^https?:\/\//, '')}
+                    </span>
+                    <span className="mt-2 block text-sm leading-6 text-muted">{l.description}</span>
+                    <span className="sr-only"> {t.ui.common.opensInNewTab}</span>
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {project.video && (
+        <section aria-labelledby="video-h" className="mt-12">
+          <h2 id="video-h" className="text-2xl font-semibold tracking-tight text-ink">{s.video}</h2>
+          <div className="mt-4">
+            <YouTubeVideo id={project.video.youtubeId} title={project.video.title} />
+          </div>
+          <p className="mt-2 text-xs text-muted">{s.videoNote}</p>
+        </section>
+      )}
+
       {project.images.length > 0 && (
-        <div className="mt-10 grid gap-4 md:grid-cols-2">
+        <div className={`mt-10 grid gap-4 ${project.images.length > 1 ? 'md:grid-cols-2' : ''}`}>
           {project.images.map((img) => (
             <figure key={img.src} className="overflow-hidden rounded-2xl border border-line bg-surface">
               <img src={img.src} alt={img.alt} loading="lazy" decoding="async" className="h-auto w-full object-cover" />
@@ -129,6 +185,24 @@ export default function ProjectDetailPage() {
       <Block id="solution" title={s.solution}>
         <p>{project.solution}</p>
       </Block>
+      {project.diagram === 'okurmenkids' && (
+        <Block id="system-architecture" title={s.diagramTitle}>
+          <p className="mb-5">{s.diagramIntro}</p>
+          <OkurmenkidsDiagram />
+        </Block>
+      )}
+      {project.capabilities.length > 0 && (
+        <Block id="capabilities" title={s.capabilities}>
+          <div className="grid gap-4 sm:grid-cols-2">
+            {project.capabilities.map((c) => (
+              <Card key={c.title}>
+                <h3 className="font-semibold text-ink">{c.title}</h3>
+                <p className="mt-2 text-sm leading-6 text-muted">{c.body}</p>
+              </Card>
+            ))}
+          </div>
+        </Block>
+      )}
       <Block id="contribution" title={s.contribution}>
         <p className="mb-4 text-sm">{s.contributionNote}</p>
         <BulletList items={project.contribution} />
@@ -168,6 +242,11 @@ export default function ProjectDetailPage() {
             </table>
           </div>
           <p className="mt-3 text-sm">{s.apiNote}</p>
+        </Block>
+      )}
+      {project.operations.length > 0 && (
+        <Block id="operations" title={s.operations}>
+          <BulletList items={project.operations} />
         </Block>
       )}
       <Block id="challenges" title={s.challenges}>

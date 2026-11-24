@@ -60,6 +60,33 @@ describe.each(LOCALES)('project content (%s)', (locale) => {
     }
   })
 
+  it('has a label and description for every production URL', () => {
+    for (const base of PROJECT_BASES) {
+      const links = texts[base.slug].productionLinks ?? []
+      expect(links.length, `${base.slug}: production links`).toBe(base.productionUrls?.length ?? 0)
+      for (const l of links) {
+        expect(l.label.length).toBeGreaterThan(0)
+        expect(l.description.length).toBeGreaterThan(0)
+      }
+    }
+  })
+
+  it('shows OkurmenKIDS as a production platform with all five live URLs', () => {
+    const p = getProject(locale, 'okurmenkids')
+    expect(p?.production).toBe(true)
+    expect(p?.diagram).toBe('okurmenkids')
+    expect(p?.video?.youtubeId).toBe('abJjnBRLFW8')
+    expect(p?.productionLinks.map((l) => l.url)).toEqual([
+      'https://okurmenkids.com',
+      'https://lms.okurmenkids.com',
+      'https://training.okurmenkids.com',
+      'https://api.okurmenkids.com',
+      'https://api.okurmenkids.com/admin/',
+    ])
+    expect(p?.capabilities.length).toBeGreaterThan(0)
+    expect(p?.operations.length).toBeGreaterThan(0)
+  })
+
   it('states a source for every metric and never leaves a metric without a label', () => {
     for (const p of projects) {
       for (const m of p.metrics) {

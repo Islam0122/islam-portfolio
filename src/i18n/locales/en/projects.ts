@@ -9,6 +9,126 @@ import type { ProjectSlug, ProjectText } from '../../../types'
  */
 
 const projects: Record<ProjectSlug, ProjectText> = {
+  okurmenkids: {
+    title: 'OkurmenKIDS — Multi-Application Academy Platform',
+    tagline:
+      'A production platform for an IT academy: a public website, an LMS, a training portal and Django Admin, all served by one Django REST API with PostgreSQL and background jobs.',
+    context:
+      'Commercial production system built at OKURMEN IT for the Okurmen Kids academy. Monorepo Islam0122/OkurmenKIDS with four deployable applications, live on okurmenkids.com and its subdomains. Repository history runs from September 2026 to the present.',
+    role: 'Full Stack Developer: backend, frontend integration, deployment',
+    period: 'Sep 2026 – present',
+    problem:
+      'The academy serves very different audiences: visitors and parents on the public website, staff running day-to-day work (groups, schedule, attendance, homework, billing, payroll, HR, marketing), students preparing for exams without an account, and administrators managing reference data. Each audience needs its own interface, but they all work with the same students, groups, lessons and payments. The data has to live in one place, behind strict role-based access.',
+    solution:
+      'One Django REST API on Railway is the single source of truth, backed by PostgreSQL. Three independent React applications, each with its own Vercel project and domain, call the API: the public website, the LMS and the training portal. Django Admin runs on the API host for back-office data. Recurring work (billing runs, accountant notifications, closing staff check-ins, operations reminders, statistics snapshots) is defined as Celery Beat tasks. With a Redis broker they run in workers; without one they run synchronously, and a Railway cron service runs the scheduled commands every 30 minutes.',
+    contribution: [
+      'Built the Django REST backend: 28 domain apps under one flat /api/v1/ namespace, with JWT auth, role-based permissions, public read-only endpoints and an OpenAPI schema (repository-based).',
+      'Connected three React 19 + TypeScript frontends to the same API, each with its own API client, error handling and environment configuration (repository-based).',
+      'Set up deployment: a Docker image for the API, an entrypoint that runs collectstatic, migrations under a PostgreSQL advisory lock and gunicorn, a Railway cron service, and three Vercel projects (repository-based).',
+      'Moved the platform to okurmenkids.com: api., lms. and training. subdomains, exact ALLOWED_HOSTS, CORS and CSRF origins in place of wildcards, and a health check exempt from the SSL redirect (documented in PRODUCTION_DOMAIN_MIGRATION.md).',
+      'Production maintenance: a read-only production audit, a fix for the www ↔ apex redirect loop, and a fix for the CORS failure on the training portal after the domain move (documented in the repository).',
+      'Automated tests across the stack: 3,681 backend test functions and 109 frontend test files (repository count).',
+    ],
+    architecture: [
+      'Monorepo with four deployable apps: backend/ (Django), frontend/ (LMS), okurmen-public-website/ and training-portal/.',
+      'Django project with split settings (base, development, production, testing, cors) and 28 domain apps in backend/apps: academy, testing, training, billing, accounting, scholarships, recruitment, marketing, website, push, staff_attendance, reports, operations and others.',
+      'One flat /api/v1/ namespace. Staff authenticate with SimpleJWT (30-minute access tokens, 7-day rotating refresh tokens); public endpoints live under /api/v1/public/ with per-IP throttles; training attempts use signed per-attempt tokens.',
+      'Request middleware isolates the accounting and student/parent areas and records the acting user for trainer history.',
+      'LMS: React 19, Vite, TanStack Query and axios with a single shared token-refresh call on 401; an installable PWA with an offline page and Web Push. The same build also serves the public schedule, leaderboard, statistics and launcher sites through VITE_APP_MODE.',
+      'Public website: React 19 SPA with TanStack Query, RU / KY / EN routes, SEO prerendering, a sitemap built from the API and Vercel middleware for social-media previews.',
+      'Training portal: React 19 with plain fetch, one API module per resource and a separate exam layout.',
+      'API documentation from drf-spectacular at /api/docs/.',
+    ],
+    dataFlow: [
+      'A visitor opens okurmenkids.com. The home page loads in one request from /api/v1/public/site/home/, and the enrollment form posts a lead to the API.',
+      'A staff member signs in at lms.okurmenkids.com and receives JWT tokens. On a 401, the client refreshes once and retries.',
+      'An administrator generates a group’s lessons from its course plan. Trainers mark attendance, homework and grades, and KPI dashboards and parent reports read the same records.',
+      'Scheduled billing tasks process completed lessons, update invoices, mark overdue ones and notify accountants.',
+      'A student at training.okurmenkids.com enters a name and starts an attempt with a signed token. Answers are autosaved, and the server enforces the deadline and grades the attempt on submit.',
+      'Administrators manage reference data and records in Django Admin at api.okurmenkids.com/admin/.',
+    ],
+    database: [
+      'PostgreSQL in production (dj-database-url). 132 migrations across the 28 apps.',
+      'Academy core: Course, CourseLessonPlan, Group, GroupTeacher (a teaching program: trainer, subject, schedule and lesson plan), GroupSchedule, Lesson, Room, Student, Attendance, Homework, HomeworkResult.',
+      'Testing and training: Test, Question, QuestionOption, TestSession, StudentAttempt, Answer, plus PortalSettings, TrainingVideo and TrainingLink for the public portal.',
+      'Billing: BillingPlan with versions, StudentBillingProfile, LessonPackage, LessonConsumption, Invoice and discount and absence policies.',
+      'users.User with a role field: administrator, trainer, team lead, assistant, accountant, director, operations director, HR, sales, marketing and student/parent.',
+    ],
+    endpointNotes: [
+      'Staff sign-in; returns JWT access and refresh tokens.',
+      'Rotate the refresh token and issue a new access token.',
+      'Generate a group’s lessons from its course plan (admin only, idempotent).',
+      'Public website home page in one request: hero, stats, CMS blocks, featured content.',
+      'Enrollment request from the public website (throttled per IP).',
+      'Public read-only schedule with a closed list of fields.',
+      'Start a training attempt by name; returns a signed attempt token.',
+      'Submit an attempt; the server grades it and returns the result.',
+      'Staff check-in after scanning the office QR code.',
+      'Health check used by the hosting platform.',
+    ],
+    challenges: [
+      'Serving several frontends from one API safely: exact CORS and CSRF origin lists per application, no wildcard trust and no localhost origins in production.',
+      'Keeping exams fair in a browser: fullscreen, tab-switch tracking and copy/paste blocking are reported to the server, which counts violations and can end the attempt. The deadline and grading never depend on the client.',
+      'Running migrations safely on deploy: one replica applies them under a PostgreSQL advisory lock while the others wait, always before gunicorn starts.',
+      'Billing that is safe to re-run: Beat only triggers the checks, and locks and unique keys in the services prevent duplicates.',
+      'Moving a live system to a new domain without breaking existing users: legacy *.vercel.app origins stay allowed during the rollout, and the redirect loop and CORS gap found after the move were fixed.',
+    ],
+    metrics: [
+      { value: '5', label: 'production URLs: public website, LMS, training portal, API and Django Admin', source: 'Repository' },
+      { value: '28', label: 'Django apps in backend/apps', source: 'Repository' },
+      { value: '3,681', label: 'backend test functions', source: 'Repository' },
+      { value: '109', label: 'frontend test files across the three React apps', source: 'Repository' },
+    ],
+    unavailable: [
+      'User, student and traffic numbers are not published here: the repository does not contain them.',
+      'Whether production runs a Redis broker and Celery workers is not verified. The repository’s own audit marks it as not verified; the code falls back to synchronous tasks and a 30-minute cron.',
+      'The repository has no CI pipeline; tests run locally.',
+      'Admin, LMS and training portal content behind sign-in is not shown publicly.',
+    ],
+    imageAlts: ['OkurmenKIDS LMS: a completed lesson with attendance, homework and lesson details in the trainer’s cabinet'],
+    productionLinks: [
+      { label: 'Public website', description: 'okurmenkids.com: courses, projects, events, news and enrollment' },
+      { label: 'LMS', description: 'lms.okurmenkids.com: staff cabinets, schedule, attendance, exams, finance' },
+      { label: 'Training portal', description: 'training.okurmenkids.com: exam preparation without an account' },
+      { label: 'REST API', description: 'api.okurmenkids.com: the central Django REST API' },
+      { label: 'Django Admin', description: 'api.okurmenkids.com/admin/: back office (sign-in required)' },
+    ],
+    capabilities: [
+      {
+        title: 'LMS and academy operations',
+        body: 'Groups, teaching programs (trainer, subject, schedule, lesson plan), idempotent lesson generation from course plans, attendance, homework and grades, a monthly attendance matrix, academic progress and a KPI dashboard with period comparison.',
+      },
+      {
+        title: 'Exams and the training portal',
+        body: 'Exam mode in the LMS, live monitoring for trainers and a public training portal: attempts by name, autosave, instant answer checks with explanations, a leaderboard, videos and links. Exam lock mode with fullscreen, tab-switch tracking and copy/paste blocking.',
+      },
+      {
+        title: 'Billing, accounting and scholarships',
+        body: 'Tuition billing by lesson packages with invoices, credit, overdue tracking and accountant notifications; a payroll and payout module for accountants; scholarships.',
+      },
+      {
+        title: 'Role-based staff cabinets',
+        body: 'Separate workspaces for administrators, trainers, a read-only team lead, assistants, accountants, directors, HR (vacancies, candidates, interviews, a public careers site) and marketing (content plan and the website CMS). Staff check in and out with an office QR code.',
+      },
+      {
+        title: 'Parents and students',
+        body: 'Parent reports built from LMS data: a 1600×1100 PNG rendered from a Django template in headless Chromium (Playwright), plus a ready WhatsApp text. A student/parent cabinet and Web Push notifications in the installed PWA.',
+      },
+      {
+        title: 'Public website and CMS',
+        body: 'Courses, student projects, achievements, news, events with registration, team, testimonials and an enrollment form in Russian, Kyrgyz and English. All content is managed in the marketing cabinet, with signed draft-preview links.',
+      },
+    ],
+    operations: [
+      'API image: python:3.12-slim with headless Chromium for report rendering, running as an unprivileged user.',
+      'Railway: the API service with PostgreSQL and a media volume, plus a cron service that runs scheduled commands every 30 minutes.',
+      'Vercel: three separate projects (public website, LMS, training portal), each with its own build, SPA rewrites and headers.',
+      'Domains on okurmenkids.com: apex for the website, lms., training. and api. subdomains with TLS; www → apex redirect configured in Vercel Domains.',
+      'Hardening: no default superuser, an exact CSRF_TRUSTED_ORIGINS list, CORS credentials off by default, HSTS, secure cookies, X-Frame-Options DENY and DRF throttling.',
+      'Maintenance: a documented production audit, the redirect-loop fix and the training-portal CORS fix after the domain migration.',
+    ],
+    videoTitle: 'OkurmenKIDS platform video',
+  },
   'okurmen-testing-platform': {
     title: 'Okurmen Kids Testing & Grading Platform',
     tagline: 'Timed online tests, automatic scoring and AI-assisted grading for an educational organisation.',

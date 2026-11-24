@@ -9,6 +9,58 @@ import { DICTIONARIES } from '../i18n/dictionaries'
  */
 export const PROJECT_BASES: ProjectBase[] = [
   {
+    slug: 'okurmenkids',
+    category: 'Professional',
+    featured: true,
+    production: true,
+    productionUrls: [
+      'https://okurmenkids.com',
+      'https://lms.okurmenkids.com',
+      'https://training.okurmenkids.com',
+      'https://api.okurmenkids.com',
+      'https://api.okurmenkids.com/admin/',
+    ],
+    youtubeId: 'abJjnBRLFW8',
+    diagram: 'okurmenkids',
+    stack: [
+      'Python',
+      'Django 6.1',
+      'Django REST Framework',
+      'SimpleJWT',
+      'drf-spectacular',
+      'PostgreSQL',
+      'Celery',
+      'Redis',
+      'Gunicorn',
+      'WhiteNoise',
+      'Playwright',
+      'Web Push',
+      'React 19',
+      'TypeScript',
+      'Vite',
+      'TanStack Query',
+      'Tailwind CSS',
+      'Docker',
+      'Railway',
+      'Vercel',
+    ],
+    endpoints: [
+      { method: 'POST', path: '/api/v1/auth/login/' },
+      { method: 'POST', path: '/api/v1/auth/refresh/' },
+      { method: 'POST', path: '/api/v1/groups/{id}/generate-lessons/' },
+      { method: 'GET', path: '/api/v1/public/site/home/' },
+      { method: 'POST', path: '/api/v1/public/site/leads/' },
+      { method: 'GET', path: '/api/v1/public/schedule/' },
+      { method: 'POST', path: '/api/v1/training/attempts/' },
+      { method: 'POST', path: '/api/v1/training/attempts/{id}/submit/' },
+      { method: 'POST', path: '/api/v1/staff-attendance/me/check-in/' },
+      { method: 'GET', path: '/api/v1/' },
+    ],
+    github: 'https://github.com/Islam0122/OkurmenKIDS',
+    live: 'https://okurmenkids.com',
+    images: [{ src: '/img/okurmenkids-lms-lesson.png' }],
+  },
+  {
     slug: 'okurmen-testing-platform',
     category: 'Professional',
     featured: true,
@@ -91,12 +143,24 @@ export function getProjects(locale: Locale): Project[] {
 
   const texts = DICTIONARIES[locale].projects
   const projects = PROJECT_BASES.map((base): Project => {
-    const { endpointNotes, imageAlts, ...text } = texts[base.slug]
+    const { productionUrls = [], youtubeId, diagram, production, ...facts } = base
+    const { endpointNotes, imageAlts, productionLinks = [], capabilities = [], operations = [], videoTitle, ...text } =
+      texts[base.slug]
     return {
-      ...base,
+      ...facts,
       ...text,
       endpoints: base.endpoints.map((e, i) => ({ ...e, note: endpointNotes[i] ?? '' })),
       images: base.images.map((img, i) => ({ ...img, alt: imageAlts[i] ?? '' })),
+      production: production ?? false,
+      productionLinks: productionUrls.map((url, i) => ({
+        url,
+        label: productionLinks[i]?.label ?? url,
+        description: productionLinks[i]?.description ?? '',
+      })),
+      capabilities,
+      operations,
+      video: youtubeId ? { youtubeId, title: videoTitle ?? text.title } : null,
+      diagram: diagram ?? null,
     }
   })
   cache.set(locale, projects)
