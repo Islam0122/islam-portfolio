@@ -139,8 +139,8 @@ export const PROJECT_BASES: ProjectBase[] = [
     slug: 'cover-studio',
     category: 'Professional',
     featured: true,
-    // Set VITE_COVER_STUDIO_VIDEO_ID once the presentation is on YouTube; until then a placeholder is shown.
-    youtubeId: parseYouTubeId(import.meta.env.VITE_COVER_STUDIO_VIDEO_ID),
+    // Published presentation: https://youtu.be/4GcK-EKd5XA. VITE_COVER_STUDIO_VIDEO_ID can override it.
+    youtubeId: parseYouTubeId(import.meta.env.VITE_COVER_STUDIO_VIDEO_ID) ?? '4GcK-EKd5XA',
     videoEnvVar: 'VITE_COVER_STUDIO_VIDEO_ID',
     videoPoster: '/img/cover-studio-youtube-thumbnail.jpg',
     stack: ['React 19', 'TypeScript', 'Vite', 'Tailwind CSS 4', 'Zustand', 'Fabric.js 7', 'jsPDF', 'React Router 7', 'Lucide React'],

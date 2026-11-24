@@ -134,19 +134,15 @@ describe('demo videos', () => {
     expect(parseYouTubeId('https://youtu.be/abJjnBRLFW8')).toBeUndefined()
   })
 
-  it.each(LOCALES)('gives Cover Studio either a configured video or a placeholder (%s)', (locale) => {
+  it.each(LOCALES)('embeds the published Cover Studio presentation (%s)', (locale) => {
     const p = getProject(locale, 'cover-studio')
-    expect(p).toBeDefined()
-    if (p?.video) {
-      expect(p.video.youtubeId).toMatch(/^[A-Za-z0-9_-]{11}$/)
-      expect(p.videoPending).toBeNull()
-    } else {
-      expect(p?.videoPending).toEqual({
-        envVar: 'VITE_COVER_STUDIO_VIDEO_ID',
-        title: DICTIONARIES[locale].projects['cover-studio'].videoTitle,
-        poster: '/img/cover-studio-youtube-thumbnail.jpg',
-      })
-    }
+    const expected = parseYouTubeId(import.meta.env.VITE_COVER_STUDIO_VIDEO_ID) ?? '4GcK-EKd5XA'
+    expect(p?.video).toEqual({
+      youtubeId: expected,
+      title: DICTIONARIES[locale].projects['cover-studio'].videoTitle,
+      poster: '/img/cover-studio-youtube-thumbnail.jpg',
+    })
+    expect(p?.videoPending).toBeNull()
   })
 
   it('never shows a placeholder for a project without a configured video variable', () => {
