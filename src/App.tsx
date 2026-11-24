@@ -25,10 +25,11 @@ function RouteFallback() {
 }
 
 function ScrollToTopOnNavigate() {
-  const { pathname } = useLocation()
+  const { pathname, hash } = useLocation()
   useEffect(() => {
-    window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
-  }, [pathname])
+    // Anchored links (e.g. /projects/cover-studio#video) are scrolled by the page that owns the anchor.
+    if (!hash) window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
+  }, [pathname, hash])
   return null
 }
 

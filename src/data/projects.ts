@@ -2,6 +2,12 @@ import type { Project, ProjectBase } from '../types'
 import type { Locale } from '../i18n/config'
 import { DICTIONARIES } from '../i18n/dictionaries'
 
+/** A YouTube video id is 11 characters of [A-Za-z0-9_-]; anything else counts as "not configured". */
+export function parseYouTubeId(value: string | undefined): string | undefined {
+  const id = value?.trim()
+  return id && /^[A-Za-z0-9_-]{11}$/.test(id) ? id : undefined
+}
+
 /*
  * Language-neutral project facts. Reader-facing texts (titles, descriptions, endpoint notes, image alt text,
  * metrics) are per language in src/i18n/locales/<lang>/projects.ts and merged in by getProjects().
@@ -133,11 +139,20 @@ export const PROJECT_BASES: ProjectBase[] = [
     slug: 'cover-studio',
     category: 'Professional',
     featured: true,
+    // Set VITE_COVER_STUDIO_VIDEO_ID once the presentation is on YouTube; until then a placeholder is shown.
+    youtubeId: parseYouTubeId(import.meta.env.VITE_COVER_STUDIO_VIDEO_ID),
+    videoEnvVar: 'VITE_COVER_STUDIO_VIDEO_ID',
+    videoPoster: '/img/cover-studio-youtube-thumbnail.jpg',
     stack: ['React 19', 'TypeScript', 'Vite', 'Tailwind CSS 4', 'Zustand', 'Fabric.js 7', 'jsPDF', 'React Router 7', 'Lucide React'],
     endpoints: [],
     github: 'https://github.com/Islam0122/cover-studio-okurmenkids',
     live: null,
-    images: [{ src: '/img/cover-studio-editor.png' }, { src: '/img/cover-studio-gallery.png' }],
+    images: [
+      { src: '/img/cover-studio-editor.png' },
+      { src: '/img/cover-studio-gallery.png' },
+      { src: '/img/cover-studio-design.webp' },
+      { src: '/img/cover-studio-export.webp' },
+    ],
   },
 ]
 
@@ -150,7 +165,7 @@ export function getProjects(locale: Locale): Project[] {
 
   const texts = DICTIONARIES[locale].projects
   const projects = PROJECT_BASES.map((base): Project => {
-    const { productionUrls = [], youtubeId, videoPoster, diagram, production, ...facts } = base
+    const { productionUrls = [], youtubeId, videoPoster, videoEnvVar, diagram, production, ...facts } = base
     const { endpointNotes, imageAlts, productionLinks = [], capabilities = [], operations = [], videoTitle, ...text } =
       texts[base.slug]
     return {
@@ -167,6 +182,8 @@ export function getProjects(locale: Locale): Project[] {
       capabilities,
       operations,
       video: youtubeId ? { youtubeId, title: videoTitle ?? text.title, poster: videoPoster ?? null } : null,
+      videoPending:
+        !youtubeId && videoEnvVar ? { envVar: videoEnvVar, title: videoTitle ?? text.title, poster: videoPoster ?? null } : null,
       diagram: diagram ?? null,
     }
   })

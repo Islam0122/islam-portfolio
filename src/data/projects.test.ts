@@ -3,7 +3,7 @@ import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { LOCALES } from '../i18n/config'
 import { DICTIONARIES } from '../i18n/dictionaries'
-import { PROJECT_BASES, getProject, getProjects } from './projects'
+import { PROJECT_BASES, getProject, getProjects, parseYouTubeId } from './projects'
 
 const PUBLIC_DIR = join(process.cwd(), 'public')
 
@@ -121,5 +121,37 @@ describe('project translations', () => {
   it('mentions that JobPulse has no automated tests in every language', () => {
     expect(getProject('en', 'jobpulse')?.unavailable.join(' ')).toMatch(/No automated tests/)
     expect(getProject('ru', 'jobpulse')?.unavailable.join(' ')).toMatch(/Автотестов нет/)
+  })
+})
+
+describe('demo videos', () => {
+  it('accepts only well-formed YouTube ids', () => {
+    expect(parseYouTubeId('abJjnBRLFW8')).toBe('abJjnBRLFW8')
+    expect(parseYouTubeId('  abJjnBRLFW8 ')).toBe('abJjnBRLFW8')
+    expect(parseYouTubeId('')).toBeUndefined()
+    expect(parseYouTubeId(undefined)).toBeUndefined()
+    expect(parseYouTubeId('VIDEO_ID')).toBeUndefined()
+    expect(parseYouTubeId('https://youtu.be/abJjnBRLFW8')).toBeUndefined()
+  })
+
+  it.each(LOCALES)('gives Cover Studio either a configured video or a placeholder (%s)', (locale) => {
+    const p = getProject(locale, 'cover-studio')
+    expect(p).toBeDefined()
+    if (p?.video) {
+      expect(p.video.youtubeId).toMatch(/^[A-Za-z0-9_-]{11}$/)
+      expect(p.videoPending).toBeNull()
+    } else {
+      expect(p?.videoPending).toEqual({
+        envVar: 'VITE_COVER_STUDIO_VIDEO_ID',
+        title: DICTIONARIES[locale].projects['cover-studio'].videoTitle,
+        poster: '/img/cover-studio-youtube-thumbnail.jpg',
+      })
+    }
+  })
+
+  it('never shows a placeholder for a project without a configured video variable', () => {
+    for (const p of getProjects('en')) {
+      if (p.slug !== 'cover-studio') expect(p.videoPending, p.slug).toBeNull()
+    }
   })
 })

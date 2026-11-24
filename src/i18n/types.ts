@@ -83,6 +83,10 @@ export interface UiStrings {
     technologies: string
     readCaseStudy: string
     inProduction: string
+    github: string
+    githubLabel: (projectTitle: string) => string
+    watchDemo: string
+    watchDemoLabel: (projectTitle: string) => string
     videoBadge: string
   }
   projects: {
@@ -131,6 +135,9 @@ export interface UiStrings {
     video: string
     playVideo: (title: string) => string
     videoNote: string
+    videoPendingTitle: string
+    videoPendingBody: string
+    videoPendingConfig: string
     diagramTitle: string
     diagramIntro: string
     capabilities: string
