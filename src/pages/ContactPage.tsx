@@ -2,6 +2,7 @@ import { Download, Mail, Phone, Send } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import { useDocumentMeta } from '../lib/useDocumentMeta'
 import { SITE } from '../data/site'
+import { useI18n } from '../i18n'
 import Breadcrumbs from '../components/Breadcrumbs'
 import { SectionHeading } from '../components/Section'
 
@@ -13,34 +14,32 @@ interface Channel {
   external?: boolean
 }
 
-const CHANNELS: Channel[] = [
-  { label: 'Email', value: SITE.email, href: `mailto:${SITE.email}`, icon: Mail },
-  { label: 'Phone', value: SITE.phone, href: `tel:${SITE.phoneTel}`, icon: Phone },
-  { label: 'Telegram', value: `@${SITE.telegram}`, href: SITE.telegramUrl, icon: Send, external: true },
-  { label: 'LinkedIn', value: 'islam-duishobaev', href: SITE.linkedin, icon: Send, external: true },
-  { label: 'GitHub', value: 'Islam0122', href: SITE.github, icon: Send, external: true },
-]
-
 export default function ContactPage() {
-  useDocumentMeta({
-    title: 'Contact — Islam Duishobaev',
-    description:
-      'Get in touch about Full Stack or Python Backend roles, or to discuss a project. Email, phone, Telegram, LinkedIn and GitHub.',
-    path: '/contact',
-  })
+  const { t } = useI18n()
+  const s = t.ui.contact
+
+  useDocumentMeta({ ...s.meta, path: '/contact' })
+
+  const channels: Channel[] = [
+    { label: s.email, value: SITE.email, href: `mailto:${SITE.email}`, icon: Mail },
+    { label: s.phone, value: SITE.phone, href: `tel:${SITE.phoneTel}`, icon: Phone },
+    { label: 'Telegram', value: `@${SITE.telegram}`, href: SITE.telegramUrl, icon: Send, external: true },
+    { label: 'LinkedIn', value: SITE.linkedinHandle, href: SITE.linkedin, icon: Send, external: true },
+    { label: 'GitHub', value: SITE.githubHandle, href: SITE.github, icon: Send, external: true },
+  ]
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6 sm:py-16">
-      <Breadcrumbs items={[{ label: 'Home', to: '/' }, { label: 'Contact' }]} />
-      <SectionHeading level={1} eyebrow="Contact" title="Let’s talk" id="contact-title">
-        I am open to remote Full Stack and Python Backend roles, including international and CIS companies. The fastest way to reach me is email or Telegram.
+      <Breadcrumbs items={[{ label: t.ui.common.home, to: '/' }, { label: t.ui.nav.contact }]} />
+      <SectionHeading level={1} eyebrow={s.eyebrow} title={s.title} id="contact-title">
+        {s.intro}
       </SectionHeading>
 
       <ul className="grid gap-3 sm:grid-cols-2">
-        {CHANNELS.map((c) => {
+        {channels.map((c) => {
           const Icon = c.icon
           return (
-            <li key={c.label}>
+            <li key={c.href}>
               <a
                 href={c.href}
                 target={c.external ? '_blank' : undefined}
@@ -53,7 +52,7 @@ export default function ContactPage() {
                 <span className="min-w-0">
                   <span className="block text-xs uppercase tracking-wider text-muted">{c.label}</span>
                   <span className="block truncate font-medium text-ink">{c.value}</span>
-                  {c.external && <span className="sr-only"> (opens in a new tab)</span>}
+                  {c.external && <span className="sr-only"> {t.ui.common.opensInNewTab}</span>}
                 </span>
               </a>
             </li>
@@ -63,21 +62,19 @@ export default function ContactPage() {
 
       <div className="mt-8 flex flex-wrap items-center gap-4 rounded-2xl border border-line bg-surface p-6">
         <div className="min-w-0 flex-1">
-          <p className="font-semibold text-ink">Prefer a document?</p>
-          <p className="text-sm text-muted">The CV is available as a PDF (Russian).</p>
+          <p className="font-semibold text-ink">{s.preferDocument}</p>
+          <p className="text-sm text-muted">{s.cvNote}</p>
         </div>
         <a
           href={SITE.cvPath}
           download
           className="inline-flex items-center gap-2 rounded-full bg-accent px-5 py-3 text-sm font-semibold text-accent-ink hover:opacity-90"
         >
-          <Download size={16} aria-hidden="true" /> Download CV
+          <Download size={16} aria-hidden="true" /> {s.downloadCv}
         </a>
       </div>
 
-      <p className="mt-8 text-sm text-muted">
-        This site has no contact form. Reach me directly by email, phone or Telegram above.
-      </p>
+      <p className="mt-8 text-sm text-muted">{s.noForm}</p>
     </div>
   )
 }

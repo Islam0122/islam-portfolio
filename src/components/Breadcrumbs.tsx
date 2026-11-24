@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { useI18n } from '../i18n'
 
 export interface Crumb {
   label: string
@@ -6,8 +7,9 @@ export interface Crumb {
 }
 
 export default function Breadcrumbs({ items }: { items: Crumb[] }) {
+  const { t } = useI18n()
   return (
-    <nav aria-label="Breadcrumb" className="mb-6">
+    <nav aria-label={t.ui.common.breadcrumb} className="mb-6">
       <ol className="flex flex-wrap items-center gap-1.5 text-sm text-muted">
         {items.map((item, i) => (
           <li key={`${item.label}-${i}`} className="flex items-center gap-1.5">
