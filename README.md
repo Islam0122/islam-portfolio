@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Islam Duishobaev — Portfolio
 
 Personal portfolio for Python Backend / Full Stack roles. Built with React 19, TypeScript, Vite, Tailwind CSS 4 and React Router 7.
@@ -52,3 +53,7 @@ Note: the 404 page is rendered by the client, so static hosts return HTTP 200 fo
 Edit `src/data/projects.ts`. Each project requires a unique `slug`, a GitHub link, and a `metrics` entry with a `source` of `CV` or `Repository`. `npm test` checks slugs, links, image paths and endpoint prefixes.
 
 Images live in `public/img/`. The CV is `public/cv/Islam-Duishobaev-CV.pdf`; replace the file to update the download.
+=======
+# islam-portfolio
+Personal developer portfolio showcasing my engineering projects, technical skills, experience, and software architecture.
+>>>>>>> 47110f38fc9e780c5282b831b54eb3c49f4a4f62
