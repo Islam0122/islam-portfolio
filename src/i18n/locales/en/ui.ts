@@ -67,6 +67,10 @@ const ui: UiStrings = {
     technologies: 'Technologies',
     readCaseStudy: 'Read case study',
     inProduction: 'In production',
+    github: 'GitHub',
+    githubLabel: (projectTitle) => `${projectTitle}: source code on GitHub`,
+    watchDemo: 'Watch demo',
+    watchDemoLabel: (projectTitle) => `Watch the demo video of ${projectTitle}`,
   },
   projects: {
     meta: {
@@ -123,6 +127,9 @@ const ui: UiStrings = {
     video: 'Video',
     playVideo: (title) => `Play video: ${title}`,
     videoNote: 'The video loads from YouTube when you press play.',
+    videoPendingTitle: 'Demo video coming soon',
+    videoPendingBody: 'A narrated walkthrough of the templates, the editor, export and project autosave is being prepared for YouTube.',
+    videoPendingConfig: 'Video ID is read from',
     diagramTitle: 'System architecture',
     diagramIntro: 'Several frontend applications connected to one centralised Django REST API. The diagram follows the code and deployment files in the repository.',
     capabilities: 'Implemented functionality',

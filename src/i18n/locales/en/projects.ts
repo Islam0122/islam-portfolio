@@ -305,44 +305,89 @@ const projects: Record<ProjectSlug, ProjectText> = {
   },
   'cover-studio': {
     title: 'Cover Studio — Certificate & Cover Editor',
-    tagline: 'A browser editor for A4 covers, certificates and reports with templates, layers and PDF/PNG export.',
+    tagline:
+      'A browser-based design tool for A4 covers, certificates, reports and title slides: parametric templates, a Fabric.js canvas editor and print-quality PDF/PNG export.',
     context: 'Professional work at OKURMEN IT, listed on the CV as “Certificate Cover Studio”. Public repository.',
     role: 'Front-end and business-logic developer',
     period: 'Not stated in the repository',
     problem:
-      'Teachers and staff needed certificates, covers and reports produced in a consistent brand style without a designer for every document.',
+      'Teachers and staff needed certificates, coursework title pages, covers and reports in a consistent brand style, without laying out every document by hand in a graphics editor or asking a designer each time.',
     solution:
-      'A three-column editor built on a Fabric.js canvas in exact A4 proportions. Users pick a template, adjust colours, fonts and background, edit text in place, place a logo or a stamp (the background of an uploaded stamp is removed automatically), and export to PDF or PNG.',
+      'Users pick one of the parametric templates, enter the content once (topic, author, supervisor, institution) and the layout is composed for them. A three-column editor built on a Fabric.js canvas in exact A4 proportions lets them fine-tune any element, recolour the whole document with theme presets, add a logo, stamp or hand-drawn signature, and export a PDF or PNG at up to 384 DPI. Projects autosave in the browser.',
     contribution: [
       'Template management, business logic and user interfaces for the certificate module (per CV).',
       'Template catalogue with 12 templates in six categories, search and orientation filter (repository README).',
     ],
     architecture: [
-      'Single-page React app with React Router 7 and a Zustand store for editor state.',
-      'Fabric.js canvas layer for drawing, selection, transforms and text editing.',
-      'Template definitions in src/templates (art, brand, build, tech) feed the gallery and the editor.',
-      'Deployable as a standard Vite build with route rewrites (vercel.json), or as a hash-routed static build for hosts without rewrites.',
+      'React 19 single-page app (TypeScript, Vite, Tailwind CSS 4) with React Router: Home, Templates and Projects pages plus a lazily loaded Editor route.',
+      'Template definitions (src/templates) are parametric: each layout is a function of the page size, so switching portrait ↔ landscape rebuilds the composition instead of stretching it.',
+      'Document model (src/types/template.ts): text holds {{field}} placeholders, colours are theme tokens such as $primary and fonts are $heading / $body, so the data form and colour presets update every element at once.',
+      'Zustand stores: editorStore (open document, selection, undo/redo history, zoom, preview), projectStore (projects persisted to LocalStorage), brandStore (logo, stamp and signature kit) and assetStore (uploaded images stored once and referenced as asset:<id>).',
+      'One Fabric.js renderer (utils/renderer.ts) draws the editor canvas, the gallery thumbnails and the exported files, and re-creates only the objects whose content changed.',
+      'Export utilities: exportImage.ts (PNG) and exportPdf.ts (jsPDF, imported on demand; the page is embedded as a 300+ DPI raster so Cyrillic text and Google Fonts look identical).',
     ],
     dataFlow: [
-      'A template is selected and copied into editor state.',
-      'Fabric.js objects are updated on user actions and synchronised back to the store.',
-      'Export runs in the browser: the canvas is rasterised for PNG or laid out with jsPDF for PDF.',
+      'A template is chosen in the gallery; a document is built from its layout and default fields, and a project is created in projectStore.',
+      'Form inputs, canvas transforms and property edits go through editorStore.commit(), which records the undo history.',
+      'The renderer synchronises the Fabric.js canvas with the document, re-creating only elements that changed, so the selection is kept.',
+      'useAutosave writes the document back to its project (debounced 500 ms and on page unload); the project list is persisted to LocalStorage.',
+      'Export renders the same document at 192, 300 or 384 DPI and downloads a PNG or a jsPDF document.',
     ],
     database: [],
     endpointNotes: [],
     challenges: [
+      'Keeping the downloaded file identical to the screen: the canvas, thumbnails and export share one renderer.',
       'Keeping an exact A4 canvas responsive across screen sizes while preserving print proportions.',
-      'Removing paper backgrounds from uploaded stamps so they sit cleanly on templates.',
+      'Removing paper backgrounds from uploaded stamps and signature scans so they sit cleanly on templates.',
+      'Staying within the LocalStorage quota: uploaded images are compressed, stored once and removed when no project uses them.',
     ],
-    metrics: [{ value: '12', label: 'templates in six categories (repository README)', source: 'Repository' }],
+    metrics: [
+      { value: '12', label: 'templates in six categories (repository README)', source: 'Repository' },
+      { value: '384 DPI', label: 'highest export preset (192 / 300 / 384 DPI in exportImage.ts)', source: 'Repository' },
+    ],
     unavailable: [
       'No backend or database: all state lives in the browser.',
       'The exact division of work on the team is not documented.',
+      'No production URL is published in the repository, so no live demo link is shown.',
     ],
     imageAlts: [
       'Cover Studio editor with an A4 certificate on the canvas and the left-hand data panel',
       'Cover Studio template gallery with category filters',
+      'Cover Studio editor with the layers panel and a hand-drawn signature and stamp on the certificate',
+      'Cover Studio download dialog with PDF and PNG formats, A4 orientation and 192 / 300 / 384 DPI quality options',
     ],
+    capabilities: [
+      {
+        title: 'Template gallery',
+        body: '12 templates in six categories — university, school, IT projects, certificates, reports and presentations — with search by name, description and tags, and a portrait / landscape filter. Thumbnails are drawn by the editor’s own renderer.',
+      },
+      {
+        title: 'Three-column editor',
+        body: 'Data, template and style panel on the left; a Fabric.js canvas in exact A4 proportions in the centre (select, drag, resize, rotate, edit text, zoom, fit, preview); element properties and layers on the right.',
+      },
+      {
+        title: 'Design tools',
+        body: 'Add text, rectangles, ellipses, lines, images and technology logos. Layers can be reordered, hidden and locked; elements can be duplicated or deleted, with undo / redo (Ctrl+Z / Ctrl+Shift+Z).',
+      },
+      {
+        title: 'Themes and backgrounds',
+        body: 'Colour presets recolour the whole document because templates use theme tokens. Heading and body fonts, and a solid, gradient or photo background.',
+      },
+      {
+        title: 'Brand kit',
+        body: 'Built-in OkurmenKids logo, stamp and signature slots. The paper background of uploaded stamps and scans is removed automatically; a signature can be drawn on screen. The kit is reused in new projects.',
+      },
+      {
+        title: 'Export and projects',
+        body: 'PNG and PDF, A4 portrait or landscape, at 192, 300 or 384 DPI. Projects autosave to LocalStorage and can be reopened, duplicated or deleted on the My Projects page.',
+      },
+    ],
+    operations: [
+      'Vercel: npm run build → dist/; vercel.json rewrites every route to index.html.',
+      'Netlify: public/_redirects provides the same single-page-app fallback.',
+      'GitHub Pages and other hosts without rewrites: npm run build:static switches to hash routing with a relative base path.',
+    ],
+    videoTitle: 'Cover Studio — product walkthrough',
   },
 }
 

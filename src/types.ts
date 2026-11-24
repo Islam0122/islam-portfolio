@@ -46,6 +46,11 @@ export interface ProjectBase {
   productionUrls?: string[]
   /** YouTube video id. */
   youtubeId?: string
+  /**
+   * Build-time environment variable that supplies the YouTube id (e.g. VITE_COVER_STUDIO_VIDEO_ID).
+   * While it is empty, the project shows a video placeholder instead of the player.
+   */
+  videoEnvVar?: string
   diagram?: ProjectDiagram
   stack: string[]
   endpoints: Omit<Endpoint, 'note'>[]
@@ -115,6 +120,8 @@ export interface Project {
   capabilities: { title: string; body: string }[]
   operations: string[]
   video: { youtubeId: string; title: string } | null
+  /** A demo video is planned but its id is not configured yet: render a placeholder. */
+  videoPending: { envVar: string; title: string } | null
   diagram: ProjectDiagram | null
 }
 

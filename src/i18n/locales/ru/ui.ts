@@ -67,6 +67,10 @@ const ui: UiStrings = {
     technologies: 'Технологии',
     readCaseStudy: 'Читать кейс',
     inProduction: 'В продакшне',
+    github: 'GitHub',
+    githubLabel: (projectTitle) => `${projectTitle}: исходный код на GitHub`,
+    watchDemo: 'Смотреть демо',
+    watchDemoLabel: (projectTitle) => `Смотреть демо-видео: ${projectTitle}`,
   },
   projects: {
     meta: {
@@ -123,6 +127,9 @@ const ui: UiStrings = {
     video: 'Видео',
     playVideo: (title) => `Смотреть видео: ${title}`,
     videoNote: 'Видео загружается с YouTube после нажатия на кнопку воспроизведения.',
+    videoPendingTitle: 'Демо-видео скоро появится',
+    videoPendingBody: 'Готовится видеообзор с озвучкой: шаблоны, редактор, экспорт и автосохранение проектов.',
+    videoPendingConfig: 'ID видео берётся из переменной',
     diagramTitle: 'Архитектура системы',
     diagramIntro: 'Несколько frontend-приложений, подключённых к единому Django REST API. Схема построена по коду и файлам развёртывания в репозитории.',
     capabilities: 'Реализованная функциональность',

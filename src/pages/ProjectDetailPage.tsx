@@ -1,5 +1,5 @@
-import type { ReactNode } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { useEffect, type ReactNode } from 'react'
+import { Link, useLocation, useParams } from 'react-router-dom'
 import { ExternalLink, GitBranch } from 'lucide-react'
 import { useDocumentMeta } from '../lib/useDocumentMeta'
 import { getProject } from '../data/projects'
@@ -9,6 +9,7 @@ import { Card, Tag } from '../components/Section'
 import ProductionBadge from '../components/ProductionBadge'
 import OkurmenkidsDiagram from '../components/OkurmenkidsDiagram'
 import YouTubeVideo from '../components/YouTubeVideo'
+import VideoPlaceholder from '../components/VideoPlaceholder'
 import NotFoundPage from './NotFoundPage'
 
 function Block({ id, title, children }: { id: string; title: string; children: ReactNode }) {
@@ -41,6 +42,14 @@ export default function ProjectDetailPage() {
   const { locale, t } = useI18n()
   const s = t.ui.project
   const project = getProject(locale, slug)
+  const { hash } = useLocation()
+
+  // Deep links such as /projects/cover-studio#video (the "Watch demo" button) scroll to their section.
+  useEffect(() => {
+    if (!hash) return
+    const frame = requestAnimationFrame(() => document.getElementById(hash.slice(1))?.scrollIntoView({ block: 'start' }))
+    return () => cancelAnimationFrame(frame)
+  }, [hash, slug])
 
   useDocumentMeta({
     title: project ? s.metaTitle(project.title) : s.notFoundMeta.title,
@@ -159,13 +168,17 @@ export default function ProjectDetailPage() {
         </section>
       )}
 
-      {project.video && (
-        <section aria-labelledby="video-h" className="mt-12">
+      {(project.video || project.videoPending) && (
+        <section id="video" aria-labelledby="video-h" className="mt-12 scroll-mt-24">
           <h2 id="video-h" className="text-2xl font-semibold tracking-tight text-ink">{s.video}</h2>
           <div className="mt-4">
-            <YouTubeVideo id={project.video.youtubeId} title={project.video.title} />
+            {project.video ? (
+              <YouTubeVideo id={project.video.youtubeId} title={project.video.title} />
+            ) : (
+              project.videoPending && <VideoPlaceholder envVar={project.videoPending.envVar} poster={project.images[0]?.src} />
+            )}
           </div>
-          <p className="mt-2 text-xs text-muted">{s.videoNote}</p>
+          {project.video && <p className="mt-2 text-xs text-muted">{s.videoNote}</p>}
         </section>
       )}
 
