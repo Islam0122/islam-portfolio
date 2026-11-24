@@ -1,6 +1,7 @@
 import { lazy, Suspense, useEffect } from 'react'
 import { Route, Routes, useLocation } from 'react-router-dom'
 import Layout from './components/Layout'
+import { useI18n } from './i18n'
 
 const HomePage = lazy(() => import('./pages/HomePage'))
 const AboutPage = lazy(() => import('./pages/AboutPage'))
@@ -14,10 +15,11 @@ const ContactPage = lazy(() => import('./pages/ContactPage'))
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'))
 
 function RouteFallback() {
+  const { t } = useI18n()
   return (
     <div role="status" aria-live="polite" className="mx-auto flex max-w-6xl items-center gap-3 px-4 py-24 text-muted sm:px-6">
       <span className="h-2 w-2 animate-pulse rounded-full bg-accent" aria-hidden="true" />
-      Loading…
+      {t.ui.common.loading}
     </div>
   )
 }

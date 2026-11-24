@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { SITE } from '../data/site'
+import { LOCALE_META, useI18n } from '../i18n'
 
 interface Meta {
   title: string
@@ -10,13 +11,15 @@ interface Meta {
   noindex?: boolean
 }
 
-function setTag(selector: string, create: () => HTMLElement, attr: string, value: string) {
-  let el = document.head.querySelector<HTMLElement>(selector)
+/** Creates or updates <meta name|property="key" content="value">. */
+function setMeta(attr: 'name' | 'property', key: string, value: string) {
+  let el = document.head.querySelector<HTMLMetaElement>(`meta[${attr}="${key}"]`)
   if (!el) {
-    el = create()
+    el = document.createElement('meta')
+    el.setAttribute(attr, key)
     document.head.appendChild(el)
   }
-  el.setAttribute(attr, value)
+  el.setAttribute('content', value)
 }
 
 /**
@@ -24,18 +27,25 @@ function setTag(selector: string, create: () => HTMLElement, attr: string, value
  * Canonical and absolute URLs are emitted only when VITE_SITE_URL is configured at build time.
  */
 export function useDocumentMeta({ title, description, path, image, type = 'website', noindex }: Meta) {
+  const { locale, t } = useI18n()
+  const ogLocale = LOCALE_META[locale].ogLocale
+  const siteName = t.profile.name
+
   useEffect(() => {
     document.title = title
-    setTag('meta[name="description"]', () => document.createElement('meta'), 'content', description)
-    setTag('meta[property="og:title"]', () => document.createElement('meta'), 'content', title)
-    setTag('meta[property="og:description"]', () => document.createElement('meta'), 'content', description)
-    setTag('meta[property="og:type"]', () => document.createElement('meta'), 'content', type)
-    setTag('meta[name="twitter:title"]', () => document.createElement('meta'), 'content', title)
-    setTag('meta[name="twitter:description"]', () => document.createElement('meta'), 'content', description)
+    setMeta('property', 'og:locale', ogLocale)
+    setMeta('property', 'og:site_name', siteName)
+    setMeta('name', 'author', siteName)
+    setMeta('name', 'description', description)
+    setMeta('property', 'og:title', title)
+    setMeta('property', 'og:description', description)
+    setMeta('property', 'og:type', type)
+    setMeta('name', 'twitter:title', title)
+    setMeta('name', 'twitter:description', description)
 
     if (SITE.siteUrl) {
       const url = `${SITE.siteUrl}${path}`
-      setTag('meta[property="og:url"]', () => document.createElement('meta'), 'content', url)
+      setMeta('property', 'og:url', url)
       let canonical = document.head.querySelector<HTMLLinkElement>('link[rel="canonical"]')
       if (!canonical) {
         canonical = document.createElement('link')
@@ -46,7 +56,7 @@ export function useDocumentMeta({ title, description, path, image, type = 'websi
     }
     if (image) {
       const absolute = SITE.siteUrl ? `${SITE.siteUrl}${image}` : image
-      setTag('meta[property="og:image"]', () => document.createElement('meta'), 'content', absolute)
+      setMeta('property', 'og:image', absolute)
     }
 
     let robots = document.head.querySelector<HTMLMetaElement>('meta[name="robots"]')
@@ -60,5 +70,5 @@ export function useDocumentMeta({ title, description, path, image, type = 'websi
     } else if (robots) {
       robots.remove()
     }
-  }, [title, description, path, image, type, noindex])
+  }, [title, description, path, image, type, noindex, ogLocale, siteName])
 }

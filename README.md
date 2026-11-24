@@ -1,9 +1,8 @@
-<<<<<<< HEAD
 # Islam Duishobaev — Portfolio
 
 Personal portfolio for Python Backend / Full Stack roles. Built with React 19, TypeScript, Vite, Tailwind CSS 4 and React Router 7.
 
-Content is typed in `src/data/` and every project fact is tagged as either **CV** (candidate-reported) or **Repository** (checked in source code). Anything that could not be verified is shown on the case-study page under “Not verified in this write-up”.
+The site is bilingual (English by default, Russian via the `RU / EN` switch in the header). Content is typed, and every project fact is tagged as either **CV** (candidate-reported) or **Repository** (checked in source code). Anything that could not be verified is shown on the case-study page under “Not verified in this write-up”.
 
 ## Pages
 
@@ -48,12 +47,32 @@ The app uses client-side routing with `BrowserRouter`, so the host must serve `i
 
 Note: the 404 page is rendered by the client, so static hosts return HTTP 200 for unknown paths unless they are configured to return 404 for them.
 
+## Languages (i18n)
+
+All text lives in one place per language; components read it through the `useI18n()` hook, so switching language re-renders the page in place without a reload. The choice is saved in `localStorage` (`locale-preference`) and mirrored to `<html lang>` and `og:locale`.
+
+```
+src/i18n/
+  config.ts          LOCALES, DEFAULT_LOCALE ('en'), LOCALE_META, localStorage helpers
+  types.ts           Dictionary interface: ui strings, profile content, project texts
+  dictionaries.ts    locale → dictionary registry
+  LanguageProvider.tsx, context.ts   React context + useI18n()
+  locales/en/        ui.ts · profile.ts · projects.ts
+  locales/ru/        ui.ts · profile.ts · projects.ts
+```
+
+Language-neutral data (contacts, links, tech stack, endpoint paths, image files) stays in `src/data/`.
+
+**Adding a language** (for example Kyrgyz, `ky`):
+
+1. Add `'ky'` to `LOCALES` and an entry to `LOCALE_META` in `src/i18n/config.ts`.
+2. Copy `src/i18n/locales/en/` to `src/i18n/locales/ky/` and translate the values.
+3. Register it in `src/i18n/dictionaries.ts`.
+
+TypeScript reports any missing key, and `npm test` checks that every dictionary has the same structure (keys, list lengths, non-empty strings) as the English one. The switcher picks the new language up automatically.
+
 ## Adding or editing a project
 
-Edit `src/data/projects.ts`. Each project requires a unique `slug`, a GitHub link, and a `metrics` entry with a `source` of `CV` or `Repository`. `npm test` checks slugs, links, image paths and endpoint prefixes.
+Language-neutral facts (slug, category, stack, GitHub link, endpoint paths, image files) go in `src/data/projects.ts`; texts go in `src/i18n/locales/<lang>/projects.ts` under the same slug, with one endpoint note per endpoint and one alt text per image. Add the slug to the `ProjectSlug` type in `src/types.ts`. Each metric needs a `source` of `CV` or `Repository`. `npm test` checks slugs, links, image paths, endpoint prefixes and translation completeness.
 
 Images live in `public/img/`. The CV is `public/cv/Islam-Duishobaev-CV.pdf`; replace the file to update the download.
-=======
-# islam-portfolio
-Personal developer portfolio showcasing my engineering projects, technical skills, experience, and software architecture.
->>>>>>> 47110f38fc9e780c5282b831b54eb3c49f4a4f62

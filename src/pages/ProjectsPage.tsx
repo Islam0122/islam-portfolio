@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import { useDocumentMeta } from '../lib/useDocumentMeta'
-import { PROJECTS } from '../data/projects'
+import { getProjects } from '../data/projects'
+import { useI18n } from '../i18n'
 import type { ProjectCategory } from '../types'
 import ProjectCard from '../components/ProjectCard'
 import Breadcrumbs from '../components/Breadcrumbs'
@@ -12,27 +13,24 @@ const FILTERS: Filter[] = ['All', 'Professional', 'Personal', 'Learning']
 
 export default function ProjectsPage() {
   const [filter, setFilter] = useState<Filter>('All')
+  const { locale, t } = useI18n()
+  const s = t.ui.projects
 
-  useDocumentMeta({
-    title: 'Projects — Islam Duishobaev',
-    description:
-      'Case studies of real projects: an online testing platform with AI grading, an RBAC access-control API, a Telegram job finder and a certificate editor.',
-    path: '/projects',
-  })
+  useDocumentMeta({ ...s.meta, path: '/projects' })
 
-  const visible = useMemo(
-    () => (filter === 'All' ? PROJECTS : PROJECTS.filter((p) => p.category === filter)),
-    [filter],
-  )
+  const visible = useMemo(() => {
+    const projects = getProjects(locale)
+    return filter === 'All' ? projects : projects.filter((p) => p.category === filter)
+  }, [filter, locale])
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16">
-      <Breadcrumbs items={[{ label: 'Home', to: '/' }, { label: 'Projects' }]} />
-      <SectionHeading level={1} eyebrow="Work" title="Projects and case studies" id="projects-title">
-        Each case study separates what I contributed from what the team did, and labels any claim that is not verified in the repository.
+      <Breadcrumbs items={[{ label: t.ui.common.home, to: '/' }, { label: t.ui.nav.projects }]} />
+      <SectionHeading level={1} eyebrow={s.eyebrow} title={s.title} id="projects-title">
+        {s.intro}
       </SectionHeading>
 
-      <div role="group" aria-label="Filter projects by category" className="mb-8 flex flex-wrap gap-2">
+      <div role="group" aria-label={s.filterLabel} className="mb-8 flex flex-wrap gap-2">
         {FILTERS.map((f) => (
           <button
             key={f}
@@ -45,7 +43,7 @@ export default function ProjectsPage() {
                 : 'border-line text-muted hover:text-ink'
             }`}
           >
-            {f}
+            {f === 'All' ? s.all : t.ui.categories[f]}
           </button>
         ))}
       </div>
@@ -57,9 +55,7 @@ export default function ProjectsPage() {
           ))}
         </div>
       ) : (
-        <EmptyState title="No projects in this category yet.">
-          Choose “All” to see every case study.
-        </EmptyState>
+        <EmptyState title={s.emptyTitle}>{s.emptyBody}</EmptyState>
       )}
     </div>
   )
