@@ -1,64 +1,96 @@
 import { Link } from 'react-router-dom'
-import { ArrowRight, ArrowUpRight, Download, Mail } from 'lucide-react'
+import { ArrowRight, ArrowUpRight, Download } from 'lucide-react'
 import { useDocumentMeta } from '../lib/useDocumentMeta'
 import { SITE } from '../data/site'
-import { getFeaturedProjects } from '../data/projects'
+import { getFeaturedProjects, getProjects } from '../data/projects'
 import { useI18n } from '../i18n'
 import { cssVars } from '../lib/cssVars'
+import { countProjectsUsing } from '../lib/stack'
 import { trackPointer } from '../lib/usePointerGlow'
 import { useReveal } from '../lib/useReveal'
 import { SectionHeading, SplitHeadline } from '../components/Section'
 import Hub from '../components/Hub'
+import Portrait from '../components/Portrait'
 import ProjectIndex from '../components/ProjectIndex'
+import { CopyEmailButton } from '../components/Footer'
 
-function Facts() {
-  const { t } = useI18n()
-  const { ref, visible } = useReveal<HTMLDListElement>()
+function ArrowLink({ to, children }: { to: string; children: string }) {
   return (
-    <dl
-      ref={ref}
-      className={`reveal grid grid-cols-2 gap-px border-y border-line bg-line sm:grid-cols-3 xl:grid-cols-6 ${visible ? 'is-visible' : ''}`}
-    >
-      {t.profile.facts.map((f) => (
-        <div key={f.label} className="bg-canvas px-4 py-6 sm:px-5">
-          <dt className="text-sm text-muted">{f.label}</dt>
-          <dd className="mt-1.5 text-[0.98rem] font-medium leading-6 text-ink">{f.value}</dd>
-        </div>
-      ))}
-    </dl>
+    <Link to={to} className="group inline-flex items-center gap-2 text-sm font-semibold text-ink">
+      <span className="link-draw">{children}</span>
+      <ArrowRight size={16} aria-hidden="true" className="transition group-hover:translate-x-1" />
+    </Link>
   )
 }
 
-function Skills() {
+/** Who this is: the portrait, the one-paragraph summary and the recruiter facts, in one band. */
+function Brief() {
   const { t } = useI18n()
-  const s = t.ui.home
+  const { profile } = t
   const { ref, visible } = useReveal<HTMLDivElement>()
   return (
-    <div ref={ref} className={`reveal grid gap-px overflow-hidden rounded-[2rem] border border-line bg-line md:grid-cols-3 ${visible ? 'is-visible' : ''}`}>
-      {t.profile.skillGroups.slice(0, 3).map((g, gi) => (
-        <section key={g.title} aria-labelledby={`skill-${gi}`} className="bg-canvas p-7 sm:p-9">
-          <h3 id={`skill-${gi}`} className="flex items-center gap-3 font-display text-lg font-medium tracking-tight text-ink">
-            <span aria-hidden="true" className="h-2 w-2 rounded-full bg-accent" />
+    <section aria-labelledby="brief-title" className="relative border-y border-line bg-surface">
+      <div ref={ref} className={`reveal mx-auto grid max-w-7xl gap-12 px-4 py-20 sm:px-6 sm:py-28 lg:grid-cols-[minmax(0,21rem)_1fr] lg:gap-24 lg:px-8 ${visible ? 'is-visible' : ''}`}>
+        <div className="mx-auto w-full max-w-[17rem] sm:max-w-xs lg:mx-0 lg:max-w-none lg:pt-4">
+          <Portrait alt={profile.portraitAlt} />
+        </div>
+        <div className="min-w-0">
+          <h2 id="brief-title" className="display text-[2.1rem] text-ink sm:text-5xl lg:text-[3.4rem]">
+            {t.ui.about.title}
+          </h2>
+          <p className="prose-measure mt-7 text-lg leading-8 text-muted sm:text-xl sm:leading-9">{profile.summary}</p>
+          <dl className="mt-12 grid gap-x-10 sm:grid-cols-2">
+            {profile.facts.map((f) => (
+              <div key={f.label} className="grid grid-cols-[7.5rem_1fr] gap-4 border-t border-line py-4 sm:grid-cols-[6.5rem_1fr]">
+                <dt className="pt-px text-sm text-muted">{f.label}</dt>
+                <dd className="font-medium leading-6 text-ink">{f.value}</dd>
+              </div>
+            ))}
+          </dl>
+          <div className="mt-8">
+            <ArrowLink to="/about">{t.ui.home.aboutLink}</ArrowLink>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+/** Skills as evidence: each technology carries the number of case studies on this site that use it. */
+function Skills() {
+  const { locale, t } = useI18n()
+  const s = t.ui.home
+  const projects = getProjects(locale)
+  const { ref, visible } = useReveal<HTMLUListElement>()
+  return (
+    <ul ref={ref} className={`reveal ${visible ? 'is-visible' : ''}`}>
+      {t.profile.skillGroups.map((g) => (
+        <li key={g.title} className="group grid gap-4 border-b border-line py-7 first:border-t sm:py-8 lg:grid-cols-[16rem_1fr] lg:gap-10">
+          <h3 className="flex items-center gap-3 font-display text-lg font-medium tracking-tight text-ink">
+            <span aria-hidden="true" className="h-2 w-2 rounded-full bg-line-strong transition-colors duration-500 group-hover:bg-accent" />
             {g.title}
           </h3>
-          <ul className="mt-6 flex flex-wrap gap-x-4 gap-y-2.5 text-[1.05rem] text-ink/85">
-            {g.items.map((i) => (
-              <li key={i} className="whitespace-nowrap">{i}</li>
-            ))}
+          <ul className="flex flex-wrap gap-x-6 gap-y-2.5">
+            {g.items.map((item) => {
+              const count = countProjectsUsing(projects, item)
+              return (
+                <li key={item} className={`text-lg leading-7 sm:text-xl ${count > 0 ? 'text-ink' : 'text-muted'}`}>
+                  {item}
+                  {count > 0 && (
+                    <>
+                      <sup aria-hidden="true" className="ml-1 font-display text-[0.7rem] font-medium text-accent">
+                        {count}
+                      </sup>
+                      <span className="sr-only"> ({s.caseStudyCount(String(count))})</span>
+                    </>
+                  )}
+                </li>
+              )
+            })}
           </ul>
-        </section>
+        </li>
       ))}
-      <p className="flex flex-wrap items-center gap-x-8 gap-y-3 bg-canvas px-7 py-6 text-sm md:col-span-3 sm:px-9">
-        <Link className="group inline-flex items-center gap-1.5 font-semibold text-ink" to="/tech-stack">
-          <span className="link-draw">{s.seeFullStack}</span>
-          <ArrowRight size={15} aria-hidden="true" className="transition group-hover:translate-x-1" />
-        </Link>
-        <Link className="group inline-flex items-center gap-1.5 font-semibold text-ink" to="/experience">
-          <span className="link-draw">{s.experienceLink}</span>
-          <ArrowRight size={15} aria-hidden="true" className="transition group-hover:translate-x-1" />
-        </Link>
-      </p>
-    </div>
+    </ul>
   )
 }
 
@@ -73,12 +105,12 @@ export default function HomePage() {
   return (
     <>
       <section aria-labelledby="hero-title" className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="grid items-center gap-10 pb-14 pt-10 sm:pt-16 lg:min-h-[calc(100svh-4.25rem)] lg:grid-cols-[1.05fr_1fr] lg:gap-6 lg:pb-16 lg:pt-6">
+        <div className="grid items-center gap-10 pb-16 pt-10 sm:pt-16 lg:min-h-[calc(100svh-4.25rem)] lg:grid-cols-[1.05fr_1fr] lg:gap-6 lg:pb-12 lg:pt-4">
           <div className="relative z-10 min-w-0">
             <div className="enter">
               <p
                 style={cssVars({ '--i': 0 })}
-                className="inline-flex max-w-full items-start gap-2.5 rounded-2xl border border-line bg-surface/70 py-1.5 pl-2.5 pr-4 text-sm leading-6 text-muted sm:items-center sm:rounded-full"
+                className="inline-flex max-w-full items-start gap-2.5 text-sm leading-6 text-muted sm:items-center"
               >
                 <span aria-hidden="true" className="pulse-dot mt-2 h-2 w-2 shrink-0 rounded-full bg-lake sm:mt-0" />
                 <span>{profile.availability}</span>
@@ -88,14 +120,14 @@ export default function HomePage() {
             <SplitHeadline
               id="hero-title"
               lines={[first, rest.join(' ')]}
-              className="mt-8 text-[clamp(2.6rem,10.5vw,6.25rem)] text-ink lg:text-[clamp(3.5rem,6.3vw,6.25rem)]"
+              className="mt-7 text-[clamp(2.6rem,10.5vw,6rem)] text-ink lg:text-[clamp(3.25rem,5.2vw,5.6rem)]"
             />
 
             <div className="enter">
               <p style={cssVars({ '--i': 3 })} className="mt-6 font-display text-base font-normal tracking-tight text-accent sm:text-lg">
                 {profile.role}
               </p>
-              <p style={cssVars({ '--i': 4 })} className="mt-5 max-w-[34rem] text-lg leading-8 text-muted sm:text-xl sm:leading-9">
+              <p style={cssVars({ '--i': 4 })} className="mt-5 max-w-[33rem] text-lg leading-8 text-muted sm:text-xl sm:leading-9">
                 {profile.tagline}
               </p>
               <div style={cssVars({ '--i': 5 })} className="mt-9 flex flex-wrap gap-3">
@@ -105,23 +137,28 @@ export default function HomePage() {
                 <a href={SITE.cvPath} download className="btn btn-ghost">
                   <Download size={16} aria-hidden="true" /> {s.downloadCvPdf}
                 </a>
-                <a href={`mailto:${SITE.email}`} className="btn btn-ghost max-sm:w-full max-sm:justify-center">
-                  <Mail size={16} aria-hidden="true" /> <span className="truncate">{SITE.email}</span>
-                </a>
               </div>
-              <nav style={cssVars({ '--i': 6 })} aria-label={s.profilesLabel} className="mt-7 flex flex-wrap gap-6 text-sm">
-                {[
-                  { label: 'GitHub', href: SITE.github },
-                  { label: 'LinkedIn', href: SITE.linkedin },
-                  { label: 'Telegram', href: SITE.telegramUrl },
-                ].map((l) => (
-                  <a key={l.label} className="group inline-flex items-center gap-1 text-muted hover:text-ink" href={l.href} target="_blank" rel="noreferrer">
-                    <span className="link-draw">{l.label}</span>
-                    <ArrowUpRight size={14} aria-hidden="true" className="transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-                    <span className="sr-only"> {t.ui.common.opensInNewTab}</span>
+              <div style={cssVars({ '--i': 6 })} className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-4 border-t border-line pt-6 text-sm">
+                <span className="inline-flex min-w-0 items-center gap-3">
+                  <a href={`mailto:${SITE.email}`} className="link-draw min-w-0 truncate font-medium text-ink">
+                    {SITE.email}
                   </a>
-                ))}
-              </nav>
+                  <CopyEmailButton compact />
+                </span>
+                <nav aria-label={s.profilesLabel} className="flex flex-wrap gap-5 sm:ml-auto">
+                  {[
+                    { label: 'GitHub', href: SITE.github },
+                    { label: 'LinkedIn', href: SITE.linkedin },
+                    { label: 'Telegram', href: SITE.telegramUrl },
+                  ].map((l) => (
+                    <a key={l.label} className="group inline-flex items-center gap-1 text-muted hover:text-ink" href={l.href} target="_blank" rel="noreferrer">
+                      <span className="link-draw">{l.label}</span>
+                      <ArrowUpRight size={14} aria-hidden="true" className="transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                      <span className="sr-only"> {t.ui.common.opensInNewTab}</span>
+                    </a>
+                  ))}
+                </nav>
+              </div>
             </div>
           </div>
 
@@ -134,28 +171,30 @@ export default function HomePage() {
             </figcaption>
           </figure>
         </div>
-
-        <Facts />
       </section>
 
+      <Brief />
+
       <section aria-labelledby="featured-title" className="mx-auto max-w-7xl px-4 pt-24 sm:px-6 sm:pt-32 lg:px-8">
-        <SectionHeading
-          title={s.featuredTitle}
-          id="featured-title"
-          aside={
-            <Link to="/projects" className="group inline-flex items-center gap-2 text-sm font-semibold text-ink">
-              <span className="link-draw">{s.viewProjects}</span>
-              <ArrowRight size={16} aria-hidden="true" className="transition group-hover:translate-x-1" />
-            </Link>
-          }
-        >
+        <SectionHeading title={s.featuredTitle} id="featured-title" aside={<ArrowLink to="/projects">{s.viewProjects}</ArrowLink>}>
           {s.featuredIntro}
         </SectionHeading>
         <ProjectIndex projects={getFeaturedProjects(locale)} />
       </section>
 
       <section aria-labelledby="skills-title" className="mx-auto max-w-7xl px-4 pt-24 sm:px-6 sm:pt-32 lg:px-8">
-        <SectionHeading title={s.skillsTitle} id="skills-title" />
+        <SectionHeading
+          title={s.skillsTitle}
+          id="skills-title"
+          aside={
+            <span className="flex flex-wrap gap-x-8 gap-y-3">
+              <ArrowLink to="/tech-stack">{s.seeFullStack}</ArrowLink>
+              <ArrowLink to="/experience">{s.experienceLink}</ArrowLink>
+            </span>
+          }
+        >
+          {s.skillsIntro}
+        </SectionHeading>
         <Skills />
       </section>
     </>

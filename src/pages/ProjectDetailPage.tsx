@@ -6,7 +6,9 @@ import { getProject } from '../data/projects'
 import { useI18n } from '../i18n'
 import { cssVars } from '../lib/cssVars'
 import { trackPointer } from '../lib/usePointerGlow'
-import { SplitHeadline, Tag } from '../components/Section'
+import { SplitHeadline } from '../components/Section'
+import { NextProject, ReadingProgress, TechList } from '../components/CaseStudyParts'
+import ProjectPlate from '../components/ProjectPlate'
 import Breadcrumbs from '../components/Breadcrumbs'
 import ProductionBadge from '../components/ProductionBadge'
 import OkurmenkidsDiagram from '../components/OkurmenkidsDiagram'
@@ -129,7 +131,8 @@ export default function ProjectDetailPage() {
 
   return (
     <article aria-labelledby="case-title">
-      <header className="mx-auto max-w-7xl px-4 pb-14 pt-10 sm:px-6 sm:pt-16 lg:px-8">
+      <ReadingProgress />
+      <header className="mx-auto max-w-7xl px-4 pb-16 pt-10 sm:px-6 sm:pt-16 lg:px-8">
         <Breadcrumbs
           items={[
             { label: t.ui.common.home, to: '/' },
@@ -164,6 +167,9 @@ export default function ProjectDetailPage() {
                 </a>
               )}
             </div>
+            <div className="mt-10 border-t border-line pt-6">
+              <TechList items={project.stack} label={s.technologiesUsed} />
+            </div>
           </div>
           <dl style={cssVars({ '--i': 4 })} className="grid content-start gap-px overflow-hidden rounded-[1.5rem] border border-line bg-line">
             <div className="bg-surface px-5 py-4">
@@ -190,19 +196,26 @@ export default function ProjectDetailPage() {
           </dl>
         </div>
 
-        <ul className="enter mt-10 flex flex-wrap gap-1.5" aria-label={s.technologiesUsed}>
-          {project.stack.map((tech, i) => (
-            <li key={tech} style={cssVars({ '--i': 5 + i * 0.25 })}>
-              <Tag>{tech}</Tag>
-            </li>
-          ))}
-        </ul>
       </header>
 
-      {lead && !project.video && !project.videoPending && (
+      {project.video || project.videoPending ? (
+        <section id="video" aria-labelledby="video-h" className="mx-auto max-w-7xl scroll-mt-24 px-4 sm:px-6 lg:px-8">
+          <h2 id="video-h" className="sr-only">{s.video}</h2>
+          {project.video ? (
+            <YouTubeVideo id={project.video.youtubeId} title={project.video.title} poster={project.video.poster} />
+          ) : (
+            project.videoPending && <VideoPlaceholder envVar={project.videoPending.envVar} poster={project.videoPending.poster ?? lead?.src} />
+          )}
+          {project.video && <p className="mt-3 text-sm text-muted">{s.videoNote}</p>}
+        </section>
+      ) : lead ? (
         <figure className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <img src={lead.src} alt={lead.alt} loading="eager" decoding="async" className="w-full rounded-[2rem] border border-line object-cover" />
+          <img src={lead.src} alt={lead.alt} loading="eager" decoding="async" className="w-full rounded-[2rem] border border-line object-cover shadow-[var(--shadow)]" />
         </figure>
+      ) : (
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <ProjectPlate project={project} className="aspect-[21/9] w-full rounded-[2rem] border border-line max-sm:aspect-[4/3]" />
+        </div>
       )}
 
       <div className="mx-auto mt-16 grid max-w-7xl grid-cols-1 gap-12 px-4 sm:px-6 lg:grid-cols-[13rem_minmax(0,1fr)] lg:gap-16 lg:px-8 xl:grid-cols-[15rem_minmax(0,1fr)]">
@@ -250,19 +263,6 @@ export default function ProjectDetailPage() {
             </Block>
           )}
 
-          {(project.video || project.videoPending) && (
-            <Block id="video" title={s.video}>
-              {project.video ? (
-                <YouTubeVideo id={project.video.youtubeId} title={project.video.title} poster={project.video.poster} />
-              ) : (
-                project.videoPending && (
-                  <VideoPlaceholder envVar={project.videoPending.envVar} poster={project.videoPending.poster ?? lead?.src} />
-                )
-              )}
-              {project.video && <p className="mt-3 text-sm text-muted">{s.videoNote}</p>}
-            </Block>
-          )}
-
           {(project.video || project.videoPending ? project.images : gallery).length > 0 && (
             <div className="mt-16 grid gap-4 sm:grid-cols-2">
               {(project.video || project.videoPending ? project.images : gallery).map((img, i, arr) => (
@@ -277,12 +277,22 @@ export default function ProjectDetailPage() {
           )}
 
           <div className="mt-16 grid grid-cols-1">
-            <Block id="problem" title={s.problem}>
-              <p className="prose-measure">{project.problem}</p>
-            </Block>
-            <Block id="solution" title={s.solution}>
-              <p className="prose-measure">{project.solution}</p>
-            </Block>
+            <div className="grid gap-px overflow-hidden rounded-[1.75rem] border border-line bg-line md:grid-cols-2">
+              <section id="problem" aria-labelledby="problem-h" className="scroll-mt-28 bg-surface p-7 sm:p-9">
+                <h2 id="problem-h" className="flex items-center gap-3 font-display text-xl font-medium tracking-tight text-ink">
+                  <span aria-hidden="true" className="h-2.5 w-2.5 rounded-full border-2 border-muted" />
+                  {s.problem}
+                </h2>
+                <p className="mt-5 text-[1.0625rem] leading-8 text-muted">{project.problem}</p>
+              </section>
+              <section id="solution" aria-labelledby="solution-h" className="scroll-mt-28 bg-surface p-7 sm:p-9" style={{ backgroundImage: 'linear-gradient(160deg, var(--accent-soft), transparent 55%)' }}>
+                <h2 id="solution-h" className="flex items-center gap-3 font-display text-xl font-medium tracking-tight text-ink">
+                  <span aria-hidden="true" className="h-2.5 w-2.5 rounded-full bg-accent" />
+                  {s.solution}
+                </h2>
+                <p className="mt-5 text-[1.0625rem] leading-8 text-ink/85">{project.solution}</p>
+              </section>
+            </div>
             {project.diagram === 'okurmenkids' && (
               <Block id="system-architecture" title={s.diagramTitle}>
                 <p className="prose-measure mb-6">{s.diagramIntro}</p>
@@ -378,21 +388,20 @@ export default function ProjectDetailPage() {
             </Block>
           </div>
 
-          <div className="mt-20 grid gap-3 border-t border-line pt-8 sm:grid-cols-2">
-            <Link to="/projects" className="group flex items-center gap-3 rounded-[1.25rem] border border-line p-5 font-medium text-ink transition hover:border-accent">
-              <ArrowLeft size={18} aria-hidden="true" className="transition group-hover:-translate-x-1" />
-              {s.allProjects.replace(/^←\s*/, '')}
+          <div className="mt-20 flex flex-wrap items-center justify-between gap-4 border-t border-line pt-8 text-sm font-semibold">
+            <Link to="/projects" className="group inline-flex items-center gap-2 text-ink">
+              <ArrowLeft size={16} aria-hidden="true" className="transition group-hover:-translate-x-1" />
+              <span className="link-draw">{s.allProjects.replace(/^←\s*/, '')}</span>
             </Link>
-            <Link
-              to="/contact"
-              className="group flex items-center justify-between gap-3 rounded-[1.25rem] bg-accent p-5 font-semibold text-accent-ink transition hover:bg-accent-bright"
-            >
-              {s.discuss.replace(/\s*→$/, '')}
-              <ArrowRight size={18} aria-hidden="true" className="transition group-hover:translate-x-1" />
+            <Link to="/contact" className="group inline-flex items-center gap-2 text-ink">
+              <span className="link-draw">{s.discuss.replace(/\s*→$/, '')}</span>
+              <ArrowRight size={16} aria-hidden="true" className="transition group-hover:translate-x-1" />
             </Link>
           </div>
         </div>
       </div>
+
+      <NextProject current={project} />
     </article>
   )
 }

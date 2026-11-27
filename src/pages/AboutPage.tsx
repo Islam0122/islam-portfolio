@@ -7,6 +7,7 @@ import { cssVars } from '../lib/cssVars'
 import { trackPointer } from '../lib/usePointerGlow'
 import Breadcrumbs from '../components/Breadcrumbs'
 import { SplitHeadline } from '../components/Section'
+import Portrait from '../components/Portrait'
 
 export default function AboutPage() {
   const { t } = useI18n()
@@ -21,23 +22,8 @@ export default function AboutPage() {
 
       <div className="grid gap-12 lg:grid-cols-[minmax(0,26rem)_1fr] lg:gap-20">
         <figure className="enter relative mx-auto w-full max-w-sm lg:sticky lg:top-28 lg:mx-0 lg:max-w-none lg:self-start">
-          <div style={cssVars({ '--i': 1 })} className="relative">
-            {/* A ring of poles around the portrait, echoing the site mark */}
-            <svg aria-hidden="true" viewBox="-110 -110 220 220" className="spin-slow pointer-events-none absolute -inset-[9%] h-[118%] w-[118%] text-accent">
-              <circle r="104" fill="none" stroke="currentColor" strokeWidth="0.6" strokeDasharray="1 5" />
-              {Array.from({ length: 24 }, (_, i) => (
-                <line key={i} y1="-104" y2={i % 6 === 0 ? -98 : -101} stroke="currentColor" strokeWidth="0.8" transform={`rotate(${i * 15})`} />
-              ))}
-            </svg>
-            <img
-              src={SITE.portrait}
-              alt={profile.portraitAlt}
-              width={960}
-              height={958}
-              className="relative aspect-square w-full rounded-full border border-line object-cover"
-              loading="eager"
-              decoding="async"
-            />
+          <div style={cssVars({ '--i': 1 })}>
+            <Portrait alt={profile.portraitAlt} eager />
           </div>
           <figcaption style={cssVars({ '--i': 2 })} className="mt-8 flex items-center justify-center gap-2 text-sm text-muted lg:justify-start">
             <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-accent" />

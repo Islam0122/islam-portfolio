@@ -56,10 +56,10 @@ function Row({ project, onEnter }: { project: Project; onEnter: () => void }) {
           </ul>
         </div>
 
-        <div className="flex flex-wrap items-center justify-between gap-4 md:flex-col md:items-end">
+        <div className="flex flex-wrap items-center justify-between gap-4 empty:hidden md:flex-col md:items-end">
           <span
             aria-hidden="true"
-            className="order-2 inline-flex h-14 w-14 items-center justify-center rounded-full border border-line-strong text-ink transition duration-500 ease-out-expo group-hover:rotate-45 group-hover:border-accent group-hover:bg-accent group-hover:text-accent-ink md:order-1"
+            className="order-2 hidden h-14 w-14 items-center md:inline-flex justify-center rounded-full border border-line-strong text-ink transition duration-500 ease-out-expo group-hover:rotate-45 group-hover:border-accent group-hover:bg-accent group-hover:text-accent-ink md:order-1"
           >
             <ArrowUpRight size={22} />
           </span>

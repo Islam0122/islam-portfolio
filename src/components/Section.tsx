@@ -22,14 +22,16 @@ export function SectionHeading({
 }) {
   const Heading = level === 1 ? 'h1' : 'h2'
   return (
-    <header className="mb-10 flex flex-wrap items-end justify-between gap-x-10 gap-y-5 sm:mb-14">
-      <div className="max-w-3xl">
-        <Heading id={id} className="display text-[2rem] text-ink sm:text-[2.75rem]">
-          {title}
-        </Heading>
-        {children && <div className="prose-measure mt-5 text-[1.0625rem] leading-7 text-muted">{children}</div>}
-      </div>
-      {aside}
+    <header className="mb-12 grid gap-6 border-t border-line-strong pt-8 sm:mb-16 lg:grid-cols-[1.15fr_1fr] lg:items-end lg:gap-16">
+      <Heading id={id} className="display text-[2.2rem] text-ink sm:text-5xl lg:text-[3.6rem]">
+        {title}
+      </Heading>
+      {(children || aside) && (
+        <div className="lg:pb-2">
+          {children && <div className="prose-measure text-[1.0625rem] leading-7 text-muted">{children}</div>}
+          {aside && <div className="mt-5">{aside}</div>}
+        </div>
+      )}
     </header>
   )
 }

@@ -69,6 +69,9 @@ const ui: UiStrings = {
     closingTitle: 'Have a role or a project in mind?',
     closingBody: 'I am open to remote Full Stack and Python Backend roles. Email is the fastest way to reach me.',
     writeEmail: 'Write an email',
+    aboutLink: 'More about me',
+    caseStudyCount: (count) => (count === '1' ? 'Used in 1 case study' : `Used in ${count} case studies`),
+    skillsIntro: 'The number next to a technology is how many case studies on this site use it.',
   },
   projectCard: {
     technologies: 'Technologies',
@@ -96,6 +99,9 @@ const ui: UiStrings = {
     emptyBody: 'Choose “All” to see every case study.',
   },
   project: {
+    showAllTech: (count) => `Show all ${count}`,
+    showFewerTech: 'Show fewer',
+    nextProject: 'Next case study',
     metaTitle: (projectTitle) => `${projectTitle} — Case study — Islam Duishobaev`,
     notFoundMeta: {
       title: 'Project not found — Islam Duishobaev',

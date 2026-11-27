@@ -104,7 +104,7 @@ function TimelineItem({ job, isLast }: { job: ExperienceEntry; isLast: boolean }
           <header className="flex items-start gap-3 sm:gap-4">
             <span
               aria-hidden="true"
-              className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-line-strong font-display text-sm font-medium text-accent transition duration-500 group-hover:rotate-[360deg] group-hover:border-accent group-hover:bg-accent group-hover:text-accent-ink sm:h-14 sm:w-14"
+              className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-line-strong font-display text-sm font-medium text-accent transition duration-500 group-hover:border-accent group-hover:bg-accent group-hover:text-accent-ink sm:h-14 sm:w-14"
             >
               {job.monogram}
             </span>
