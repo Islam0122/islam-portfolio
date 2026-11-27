@@ -7,14 +7,14 @@ function Node({ icon: Icon, label, detail, strong = false }: { icon: LucideIcon;
   const [first, ...rest] = detail.split(' · ')
   return (
     <div
-      className={`relative z-10 flex h-full items-center gap-3 rounded-xl border px-3 py-3 lg:px-4 ${
-        strong ? 'border-accent bg-accent-soft' : 'border-line bg-surface-2'
+      className={`relative z-10 flex h-full items-center gap-3 rounded-2xl border px-3 py-3 transition duration-300 hover:-translate-y-0.5 lg:px-4 ${
+        strong ? 'border-accent bg-accent-soft shadow-[0_0_0_6px_var(--accent-soft)]' : 'border-line bg-canvas hover:border-line-strong'
       }`}
     >
       <span
         aria-hidden="true"
         className={`inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-lg ${
-          strong ? 'bg-accent text-accent-ink' : 'bg-surface text-accent'
+          strong ? 'bg-accent text-accent-ink' : 'bg-surface-2 text-accent'
         }`}
       >
         <Icon size={18} />
@@ -66,9 +66,9 @@ export default function OkurmenkidsDiagram() {
   ]
 
   return (
-    <figure className="rounded-2xl border border-line bg-surface p-4 sm:p-6">
+    <figure className="rounded-[1.75rem] border border-line bg-surface p-4 sm:p-7">
       <div role="img" aria-label={d.ariaLabel}>
-        <div aria-hidden="true" className="mb-3 hidden font-mono text-[11px] uppercase tracking-wider text-muted md:grid md:grid-cols-[1.3fr_2rem_1fr_2rem_1fr] lg:grid-cols-[1.25fr_2.5rem_1fr_2.5rem_1fr]">
+        <div aria-hidden="true" className="mb-4 hidden text-sm text-muted md:grid md:grid-cols-[1.3fr_2rem_1fr_2rem_1fr] lg:grid-cols-[1.25fr_2.5rem_1fr_2.5rem_1fr]">
           <span>{d.clientsLabel}</span>
           <span />
           <span>{d.backendLabel}</span>
@@ -107,12 +107,12 @@ export default function OkurmenkidsDiagram() {
         </div>
       </div>
       <figcaption className="mt-5 border-t border-line pt-4">
-        <ul className="flex flex-wrap gap-x-5 gap-y-1 font-mono text-[11px] uppercase tracking-wider text-accent">
+        <ul className="flex flex-wrap gap-2 text-xs font-medium text-ink">
           {d.hosting.map((h) => (
-            <li key={h}>{h}</li>
+            <li key={h} className="rounded-full border border-line-strong px-3 py-1">{h}</li>
           ))}
         </ul>
-        <p className="mt-3 text-xs leading-5 text-muted">{d.note}</p>
+        <p className="mt-4 text-sm leading-6 text-muted">{d.note}</p>
       </figcaption>
     </figure>
   )

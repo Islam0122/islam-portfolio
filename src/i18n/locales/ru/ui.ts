@@ -62,6 +62,13 @@ const ui: UiStrings = {
     skillsTitle: 'С чем я работаю каждый день',
     seeFullStack: 'Весь стек технологий',
     experienceLink: 'Опыт работы',
+    copyEmail: 'Скопировать адрес почты',
+    emailCopied: 'Адрес скопирован',
+    hubLabel: 'Схема: один Django REST API в центре, вокруг него связанные технологии',
+    hubCaption: 'Один API в центре, всё остальное подключено к нему. Так устроена платформа OkurmenKIDS.',
+    closingTitle: 'Есть вакансия или проект?',
+    closingBody: 'Я открыт к удалённой работе Full Stack и Python Backend разработчиком. Быстрее всего со мной связаться по почте.',
+    writeEmail: 'Написать письмо',
   },
   projectCard: {
     technologies: 'Технологии',
@@ -192,6 +199,11 @@ const ui: UiStrings = {
     project: 'Проект',
     category: 'Категория',
     stack: 'Стек',
+    filterLabel: 'Фильтр проектов по технологии',
+    filterHint: 'Выберите технологию, чтобы увидеть проекты, где она используется.',
+    clearFilter: 'Показать все проекты',
+    usedIn: (count) => `Используется в кейсах: ${count}`,
+    noMatch: 'Не используется в кейсах на этом сайте.',
   },
   architecture: {
     meta: {

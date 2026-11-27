@@ -78,6 +78,13 @@ export interface UiStrings {
     skillsTitle: string
     seeFullStack: string
     experienceLink: string
+    copyEmail: string
+    emailCopied: string
+    hubLabel: string
+    hubCaption: string
+    closingTitle: string
+    closingBody: string
+    writeEmail: string
   }
   projectCard: {
     technologies: string
@@ -186,6 +193,11 @@ export interface UiStrings {
     project: string
     category: string
     stack: string
+    filterLabel: string
+    filterHint: string
+    clearFilter: string
+    usedIn: (count: string) => string
+    noMatch: string
   }
   architecture: {
     meta: PageMeta
