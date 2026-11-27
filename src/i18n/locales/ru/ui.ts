@@ -69,6 +69,9 @@ const ui: UiStrings = {
     closingTitle: 'Есть вакансия или проект?',
     closingBody: 'Я открыт к удалённой работе Full Stack и Python Backend разработчиком. Быстрее всего со мной связаться по почте.',
     writeEmail: 'Написать письмо',
+    aboutLink: 'Подробнее обо мне',
+    caseStudyCount: (count) => `Используется в кейсах: ${count}`,
+    skillsIntro: 'Число рядом с технологией показывает, в скольких кейсах на этом сайте она используется.',
   },
   projectCard: {
     technologies: 'Технологии',
@@ -96,6 +99,9 @@ const ui: UiStrings = {
     emptyBody: 'Выберите «Все», чтобы увидеть все кейсы.',
   },
   project: {
+    showAllTech: (count) => `Показать все (${count})`,
+    showFewerTech: 'Свернуть',
+    nextProject: 'Следующий кейс',
     metaTitle: (projectTitle) => `${projectTitle} — Кейс — Ислам Дуйшобаев`,
     notFoundMeta: {
       title: 'Проект не найден — Ислам Дуйшобаев',

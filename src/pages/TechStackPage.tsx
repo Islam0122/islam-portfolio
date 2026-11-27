@@ -5,17 +5,7 @@ import { useDocumentMeta } from '../lib/useDocumentMeta'
 import { getProjects } from '../data/projects'
 import { useI18n } from '../i18n'
 import { PageHeader } from '../components/Section'
-
-const norm = (v: string) => v.toLowerCase().replace(/[^a-z0-9+#]/g, '')
-
-/** A project uses a technology if one of its stack entries is that technology, with or without a version. */
-function uses(stack: string[], tech: string) {
-  const n = norm(tech)
-  return stack.some((s) => {
-    const m = norm(s)
-    return m === n || (m.startsWith(n) && /^[0-9]/.test(m.slice(n.length))) || norm(s.split(/[\s/(]/)[0]) === n
-  })
-}
+import { usesTech } from '../lib/stack'
 
 export default function TechStackPage() {
   const { locale, t } = useI18n()
@@ -27,11 +17,11 @@ export default function TechStackPage() {
 
   const usage = useMemo(() => {
     const map = new Map<string, number>()
-    t.profile.skillGroups.forEach((g) => g.items.forEach((i) => map.set(i, projects.filter((p) => uses(p.stack, i)).length)))
+    t.profile.skillGroups.forEach((g) => g.items.forEach((i) => map.set(i, projects.filter((p) => usesTech(p.stack, i)).length)))
     return map
   }, [t.profile.skillGroups, projects])
 
-  const matching = picked ? projects.filter((p) => uses(p.stack, picked)) : projects
+  const matching = picked ? projects.filter((p) => usesTech(p.stack, picked)) : projects
 
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -123,7 +113,7 @@ export default function TechStackPage() {
                 </span>
                 <ul className="flex flex-wrap gap-x-3 gap-y-1 text-sm text-muted" aria-label={s.stack}>
                   {p.stack.map((tech) => (
-                    <li key={tech} className={picked && uses([tech], picked) ? 'font-semibold text-accent' : ''}>
+                    <li key={tech} className={picked && usesTech([tech], picked) ? 'font-semibold text-accent' : ''}>
                       {tech}
                     </li>
                   ))}

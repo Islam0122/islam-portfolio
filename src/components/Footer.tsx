@@ -8,9 +8,31 @@ import TundukMark from './TundukMark'
 
 const FOOTER_LINKS = NAV_ITEMS.filter((item) => item.to !== '/')
 
-export function CopyEmailButton({ className = '' }: { className?: string }) {
+export function CopyEmailButton({ className = '', compact = false }: { className?: string; compact?: boolean }) {
   const { t } = useI18n()
   const { copied, copy } = useCopy()
+  if (compact) {
+    return (
+      <button
+        type="button"
+        onClick={() => copy(SITE.email)}
+        aria-label={copied ? t.ui.home.emailCopied : t.ui.home.copyEmail}
+        title={t.ui.home.copyEmail}
+        className={`group relative inline-flex h-9 w-9 items-center justify-center rounded-full border border-line-strong text-muted transition hover:border-accent hover:text-ink ${className}`}
+      >
+        <Copy size={14} aria-hidden="true" className={`absolute transition duration-300 ${copied ? 'scale-50 opacity-0' : ''}`} />
+        <Check size={15} aria-hidden="true" className={`absolute text-lake transition duration-300 ${copied ? '' : 'scale-50 opacity-0'}`} />
+        <span
+          aria-live="polite"
+          className={`pointer-events-none absolute left-full ml-3 whitespace-nowrap rounded-full bg-ink px-2.5 py-1 text-xs font-medium text-canvas transition duration-300 ${
+            copied ? 'translate-x-0 opacity-100' : '-translate-x-1 opacity-0'
+          }`}
+        >
+          {copied ? t.ui.home.emailCopied : ''}
+        </span>
+      </button>
+    )
+  }
   return (
     <button
       type="button"
@@ -116,11 +138,21 @@ export default function Footer() {
         <p className="mx-auto max-w-7xl px-4 pb-8 text-xs leading-5 text-muted sm:px-6 lg:px-8">{t.ui.footer.copyright(year, name)}</p>
       </div>
 
-      {/* The name as a horizon line at the very bottom */}
-      <div aria-hidden="true" className="pointer-events-none select-none overflow-hidden">
+      {/* Finale: the name set as a horizon, fading into the ground, with the mark rising behind it. */}
+      <div aria-hidden="true" className="pointer-events-none relative select-none overflow-hidden">
+        <svg viewBox="-100 -100 200 200" className="spin-slow absolute left-1/2 top-[18%] w-[46vw] max-w-[40rem] -translate-x-1/2 text-accent opacity-[0.12]">
+          <circle r="96" fill="none" stroke="currentColor" strokeWidth="0.8" />
+          {Array.from({ length: 36 }, (_, i) => (
+            <line key={i} y1="-96" y2={i % 3 === 0 ? -86 : -91} stroke="currentColor" strokeWidth="0.8" transform={`rotate(${i * 10})`} />
+          ))}
+        </svg>
         <p
-          className="display -mb-[0.18em] whitespace-nowrap text-center text-[17vw] leading-none text-transparent"
-          style={{ WebkitTextStroke: '1px var(--line-strong)' }}
+          className="display relative -mb-[0.2em] whitespace-nowrap text-center text-[16.5vw] leading-none text-transparent"
+          style={{
+            backgroundImage: 'linear-gradient(to bottom, var(--surface-2) 15%, var(--canvas) 85%)',
+            WebkitBackgroundClip: 'text',
+            backgroundClip: 'text',
+          }}
         >
           {t.profile.shortName}
         </p>

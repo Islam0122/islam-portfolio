@@ -85,6 +85,9 @@ export interface UiStrings {
     closingTitle: string
     closingBody: string
     writeEmail: string
+    aboutLink: string
+    caseStudyCount: (count: string) => string
+    skillsIntro: string
   }
   projectCard: {
     technologies: string
@@ -107,6 +110,9 @@ export interface UiStrings {
     emptyBody: string
   }
   project: {
+    showAllTech: (count: string) => string
+    showFewerTech: string
+    nextProject: string
     metaTitle: (projectTitle: string) => string
     notFoundMeta: PageMeta
     myRole: string
