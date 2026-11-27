@@ -62,6 +62,13 @@ const ui: UiStrings = {
     skillsTitle: 'What I work with day to day',
     seeFullStack: 'See the full stack',
     experienceLink: 'Experience',
+    copyEmail: 'Copy email address',
+    emailCopied: 'Email copied',
+    hubLabel: 'Diagram: one Django REST API at the centre, connected to the technologies around it',
+    hubCaption: 'One API in the centre, everything else connected to it. That is how OkurmenKIDS is built.',
+    closingTitle: 'Have a role or a project in mind?',
+    closingBody: 'I am open to remote Full Stack and Python Backend roles. Email is the fastest way to reach me.',
+    writeEmail: 'Write an email',
   },
   projectCard: {
     technologies: 'Technologies',
@@ -193,6 +200,11 @@ const ui: UiStrings = {
     project: 'Project',
     category: 'Category',
     stack: 'Stack',
+    filterLabel: 'Filter projects by technology',
+    filterHint: 'Pick a technology to see the projects that use it.',
+    clearFilter: 'Show all projects',
+    usedIn: (count) => `Used in ${count} of the case studies below`,
+    noMatch: 'Not used in the case studies on this site.',
   },
   architecture: {
     meta: {

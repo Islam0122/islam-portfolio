@@ -9,15 +9,18 @@ export interface Crumb {
 export default function Breadcrumbs({ items }: { items: Crumb[] }) {
   const { t } = useI18n()
   return (
-    <nav aria-label={t.ui.common.breadcrumb} className="mb-6">
-      <ol className="flex flex-wrap items-center gap-1.5 text-sm text-muted">
+    <nav aria-label={t.ui.common.breadcrumb} className="enter mb-8 sm:mb-10">
+      <ol className="flex flex-wrap items-center gap-2 text-sm text-muted">
         {items.map((item, i) => (
-          <li key={`${item.label}-${i}`} className="flex items-center gap-1.5">
-            {i > 0 && <span aria-hidden="true">/</span>}
+          <li key={`${item.label}-${i}`} className="flex min-w-0 items-center gap-2">
+            {i > 0 && <span aria-hidden="true" className="h-px w-4 bg-line-strong" />}
             {item.to ? (
-              <Link className="hover:text-ink" to={item.to}>{item.label}</Link>
+              <Link className="link-draw hover:text-ink" to={item.to}>{item.label}</Link>
             ) : (
-              <span className="text-ink" aria-current="page">{item.label}</span>
+              <span className="inline-flex min-w-0 items-center gap-2 break-words text-ink" aria-current="page">
+                <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-accent" />
+                {item.label}
+              </span>
             )}
           </li>
         ))}

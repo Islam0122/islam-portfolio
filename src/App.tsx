@@ -1,6 +1,7 @@
 import { lazy, Suspense, useEffect } from 'react'
 import { Route, Routes, useLocation } from 'react-router-dom'
 import Layout from './components/Layout'
+import TundukMark from './components/TundukMark'
 import { useI18n } from './i18n'
 
 const HomePage = lazy(() => import('./pages/HomePage'))
@@ -17,8 +18,8 @@ const NotFoundPage = lazy(() => import('./pages/NotFoundPage'))
 function RouteFallback() {
   const { t } = useI18n()
   return (
-    <div role="status" aria-live="polite" className="mx-auto flex max-w-6xl items-center gap-3 px-4 py-24 text-muted sm:px-6">
-      <span className="h-2 w-2 animate-pulse rounded-full bg-accent" aria-hidden="true" />
+    <div role="status" aria-live="polite" className="mx-auto flex min-h-[50vh] max-w-7xl items-center justify-center gap-3 px-4 text-sm text-muted sm:px-6">
+      <TundukMark size={22} className="animate-spin text-accent [animation-duration:2.4s]" />
       {t.ui.common.loading}
     </div>
   )

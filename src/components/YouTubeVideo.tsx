@@ -11,7 +11,7 @@ export default function YouTubeVideo({ id, title, poster }: { id: string; title:
   const [playing, setPlaying] = useState(false)
 
   return (
-    <div className="relative aspect-video overflow-hidden rounded-2xl border border-line bg-surface-2">
+    <div className="relative aspect-video overflow-hidden rounded-[1.75rem] border border-line bg-surface-2 shadow-[var(--shadow)]">
       {playing ? (
         <iframe
           className="absolute inset-0 h-full w-full"
@@ -32,11 +32,12 @@ export default function YouTubeVideo({ id, title, poster }: { id: string; title:
             alt=""
             loading="lazy"
             decoding="async"
-            className="h-full w-full object-cover opacity-90 transition group-hover:opacity-100"
+            className="h-full w-full object-cover transition duration-[1200ms] ease-out-expo group-hover:scale-[1.03]"
           />
-          <span className="absolute inset-0 flex items-center justify-center">
-            <span className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-accent text-accent-ink shadow-lg transition group-hover:scale-105">
-              <Play size={26} aria-hidden="true" className="translate-x-0.5" />
+          <span className="absolute inset-0 flex items-center justify-center bg-gradient-to-t from-black/40 to-transparent">
+            <span className="relative inline-flex h-20 w-20 items-center justify-center rounded-full bg-accent text-accent-ink shadow-lg transition duration-500 ease-out-expo group-hover:scale-110">
+              <span aria-hidden="true" className="absolute inset-0 animate-ping rounded-full bg-accent opacity-30 [animation-duration:2.4s]" />
+              <Play size={28} fill="currentColor" aria-hidden="true" className="relative translate-x-0.5" />
             </span>
           </span>
         </button>
